@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../../domain/services/scan_service.dart';
 import 'capture_preview_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class ManualCaptureScreen extends StatefulWidget {
   final List<CameraDescription> cameras;

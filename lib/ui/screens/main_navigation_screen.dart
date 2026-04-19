@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'folders_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

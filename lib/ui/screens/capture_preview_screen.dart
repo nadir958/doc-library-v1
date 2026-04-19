@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/capture_provider.dart';
 import '../providers/folder_provider.dart';
 import '../../data/models/models.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class CapturePreviewScreen extends ConsumerStatefulWidget {
   final List<String> imagePaths;

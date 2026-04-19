@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:doc_library/generated/l10n/app_localizations.dart';
 import 'data/models/models.dart';
 import 'ui/theme/app_theme.dart';
 import 'ui/screens/main_navigation_screen.dart';

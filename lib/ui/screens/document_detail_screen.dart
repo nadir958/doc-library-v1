@@ -11,7 +11,7 @@ import '../providers/document_provider.dart';
 import '../providers/capture_provider.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 final documentPagesProvider = FutureProvider.family<List<PageModel>, int>((ref, docId) async {
   final repo = ref.watch(documentRepositoryProvider);
