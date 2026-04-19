@@ -183,14 +183,14 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
-          TextButton(
-            onPressed: () async {
-              if (controller.text.isNotEmpty) {
-                final folderId = await ref.read(folderListProvider.notifier).createFolder(controller.text);
                 setState(() => _selectedFolderId = folderId);
               }
               if (context.mounted) Navigator.pop(context);
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigoAccent,
+              foregroundColor: Colors.white,
+            ),
             child: Text(l10n.create),
           ),
         ],

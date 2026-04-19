@@ -36,5 +36,18 @@
   "ocrInProgress": "Extraction du texte en cours...",
   "noPages": "Aucune page dans ce document.",
   "capturePreview": "Aperçu des captures",
-  "addPages": "Ajouter des pages"
+  "addPages": "Ajouter des pages",
+  "selectLanguage": "Sélectionner la langue",
+  "selectTheme": "Sélectionner le thème",
+  "viewDocuments": "Voir les documents",
+  "disabledForNow": "Désactivé pour le moment",
+  "comingSoon": "Bientôt disponible dans les réglages",
+  "all": "Tous",
+  "notes": "Notes",
+  "addNote": "Ajouter une note",
+  "smartScan": "Smart Scan",
+  "smartScanDesc": "Détection automatique et correction",
+  "system": "Système",
+  "light": "Clair",
+  "dark": "Sombre"
 }

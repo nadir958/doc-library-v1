@@ -115,6 +115,17 @@ class DocumentRepository {
     });
   }
 
+  // Mettre à jour les notes d'une page
+  Future<void> updatePageNotes(int pageId, String notes) async {
+    await isar.writeTxn(() async {
+      final page = await isar.pageModels.get(pageId);
+      if (page != null) {
+        page.notes = notes;
+        await isar.pageModels.put(page);
+      }
+    });
+  }
+
   // Tout effacer
   Future<void> deleteAllData() async {
     await isar.writeTxn(() async {

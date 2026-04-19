@@ -40,6 +40,7 @@ class PageModel {
   late String originalPath;
   
   String? ocrText;
+  String? notes;
   
   @Index()
   late int order;

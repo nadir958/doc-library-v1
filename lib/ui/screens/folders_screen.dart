@@ -76,9 +76,10 @@ class FoldersScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 4),
                       // Pour une version plus complexe, on pourrait utiliser un StreamProvider pour compter
-                      const Text(
-                        'Voir les documents',
-                        style: TextStyle(fontSize: 12, color: Colors.indigoAccent),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.viewDocuments,
+                        style: const TextStyle(fontSize: 12, color: Colors.indigoAccent),
                       ),
                     ],
                   ),
@@ -93,6 +94,7 @@ class FoldersScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddFolderDialog(context, ref),
         backgroundColor: Colors.indigoAccent,
+        foregroundColor: Colors.white,
         child: const Icon(Icons.create_new_folder),
       ),
     );
@@ -118,7 +120,7 @@ class FoldersScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white54)),
+            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white70)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -127,7 +129,10 @@ class FoldersScreen extends ConsumerWidget {
                 Navigator.pop(ctx);
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.indigoAccent),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigoAccent,
+              foregroundColor: Colors.white,
+            ),
             child: Text(l10n.create),
           ),
         ],

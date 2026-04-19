@@ -49,10 +49,10 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.lock),
             title: Text(l10n.biometricLock),
-            subtitle: const Text("Désactivé pour le moment"),
+            subtitle: Text(l10n.disabledForNow),
             trailing: Switch(value: false, onChanged: (val) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Bientôt disponible dans les réglages")),
+                SnackBar(content: Text(l10n.comingSoon)),
               );
             }),
           ),
@@ -88,15 +88,16 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   void _showLanguageDialog(BuildContext context, SettingsNotifier notifier) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Sélectionner la langue"),
+        title: Text(l10n.selectLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: const Text("Système"),
+              title: Text(l10n.system),
               onTap: () {
                 notifier.setLocale(null);
                 Navigator.pop(context);
@@ -130,29 +131,30 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   void _showThemeDialog(BuildContext context, SettingsNotifier notifier) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Sélectionner le thème"),
+        title: Text(l10n.selectTheme),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: const Text("Système"),
+              title: Text(l10n.system),
               onTap: () {
                 notifier.setThemeMode(ThemeMode.system);
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text("Clair"),
+              title: Text(l10n.light),
               onTap: () {
                 notifier.setThemeMode(ThemeMode.light);
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text("Sombre"),
+              title: Text(l10n.dark),
               onTap: () {
                 notifier.setThemeMode(ThemeMode.dark);
                 Navigator.pop(context);

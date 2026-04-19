@@ -105,7 +105,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: FilterChip(
-                        label: const Text("Tous"),
+                        label: Text(l10n.all),
                         selected: _selectedTag == null,
                         onSelected: (selected) {
                           setState(() => _selectedTag = null);
@@ -183,6 +183,22 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           context,
                           MaterialPageRoute(builder: (context) => DocumentDetailScreen(document: doc)),
                         ),
+                        onLongPress: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(l10n.deleteDocument),
+                              content: Text(l10n.deleteDocumentConfirm),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
+                                TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.delete, style: const TextStyle(color: Colors.red))),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true) {
+                            ref.read(documentListProvider.notifier).deleteDocument(doc.id!);
+                          }
+                        },
                       ),
                     );
                   },
@@ -199,6 +215,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         label: Text(l10n.addDocument),
         icon: const Icon(Icons.add_a_photo),
         backgroundColor: Colors.indigoAccent,
+        foregroundColor: Colors.white,
       ),
     );
   }
@@ -219,8 +236,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.auto_awesome, color: Colors.amberAccent),
-                title: const Text('Smart Scan'),
-                subtitle: const Text('Détection automatique et correction'),
+                title: Text(l10n.smartScan),
+                subtitle: Text(l10n.smartScanDesc),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final images = await ref.read(scanServiceProvider).startSmartScan();
