@@ -215,7 +215,7 @@ class FoldersScreen extends ConsumerWidget {
           ],
         ),
         child: FloatingActionButton.extended(
-          onPressed: () => _showCaptureOptions(context),
+          onPressed: () => _showCaptureOptions(context, ref),
           label: Text(l10n.addDocument, style: const TextStyle(fontWeight: FontWeight.bold)),
           icon: const Icon(Icons.add_a_photo),
           backgroundColor: Colors.transparent,
@@ -273,7 +273,7 @@ class FoldersScreen extends ConsumerWidget {
     );
   }
 
-  void _showCaptureOptions(BuildContext context) {
+  void _showCaptureOptions(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     showModalBottomSheet(

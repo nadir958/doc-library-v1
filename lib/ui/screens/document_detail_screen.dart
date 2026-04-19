@@ -138,10 +138,10 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               children: [
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.arrow_back, size: 14, color: Colors.indigoAccent),
-                      SizedBox(width: 4),
+                      const Icon(Icons.arrow_back, size: 14, color: Colors.indigoAccent),
+                      const SizedBox(width: 4),
                       Text("Retour au Vault", style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurfaceVariant)),
                     ],
                   ),
