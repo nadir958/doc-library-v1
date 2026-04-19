@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/capture_provider.dart';
 import '../providers/folder_provider.dart';
 import '../../data/models/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CapturePreviewScreen extends ConsumerStatefulWidget {
   final List<String> imagePaths;
@@ -31,6 +32,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final captureState = ref.watch(captureProvider);
     final foldersAsync = ref.watch(folderListProvider);
 
@@ -87,22 +89,38 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
             if (widget.existingDocId == null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-                child: foldersAsync.when(
-                  data: (folders) => DropdownButtonFormField<int>(
-                    value: _selectedFolderId,
-                    decoration: const InputDecoration(
-                      labelText: 'Dossier de destination',
-                      filled: true,
-                      fillColor: Color(0xFF1E293B),
+                child: Column(
+                  children: [
+                    foldersAsync.when(
+                      data: (folders) => Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField<int>(
+                              value: _selectedFolderId,
+                              decoration: InputDecoration(
+                                labelText: l10n.selectFolder,
+                                filled: true,
+                                fillColor: const Color(0xFF1E293B),
+                              ),
+                              items: [
+                                DropdownMenuItem(value: null, child: Text(l10n.rootFolder)),
+                                ...folders.map((f) => DropdownMenuItem(value: f.id, child: Text(f.name))),
+                              ],
+                              onChanged: (val) => setState(() => _selectedFolderId = val),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          IconButton(
+                            icon: const Icon(Icons.create_new_folder, color: Colors.lightBlueAccent),
+                            onPressed: () => _showNewFolderDialog(context),
+                            tooltip: l10n.newFolder,
+                          ),
+                        ],
+                      ),
+                      loading: () => const CircularProgressIndicator(),
+                      error: (_, __) => const SizedBox(),
                     ),
-                    items: [
-                      const DropdownMenuItem(value: null, child: Text('Aucun dossier (Racine)')),
-                      ...folders.map((f) => DropdownMenuItem(value: f.id, child: Text(f.name))),
-                    ],
-                    onChanged: (val) => setState(() => _selectedFolderId = val),
-                  ),
-                  loading: () => const CircularProgressIndicator(),
-                  error: (_, __) => const SizedBox(),
+                  ],
                 ),
               ),
 
@@ -131,7 +149,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
                   backgroundColor: Colors.indigoAccent,
                 ),
                 icon: const Icon(Icons.auto_fix_high),
-                label: Text(widget.existingDocId != null ? 'Ajouter au document' : 'Lancer l\'OCR et Sauvegarder'),
+                label: Text(widget.existingDocId != null ? l10n.addPages : l10n.addDocument),
               ),
             ),
           ],
@@ -148,6 +166,34 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
           ),
         ),
         error: (err, st) => Center(child: Text("Erreur: $err")),
+      ),
+    );
+  }
+  void _showNewFolderDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.newFolder),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: l10n.folderName),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () async {
+              if (controller.text.isNotEmpty) {
+                final folderId = await ref.read(folderListProvider.notifier).createFolder(controller.text);
+                setState(() => _selectedFolderId = folderId);
+              }
+              if (context.mounted) Navigator.pop(context);
+            },
+            child: Text(l10n.create),
+          ),
+        ],
       ),
     );
   }

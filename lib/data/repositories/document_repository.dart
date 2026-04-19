@@ -114,4 +114,13 @@ class DocumentRepository {
       }
     });
   }
+
+  // Tout effacer
+  Future<void> deleteAllData() async {
+    await isar.writeTxn(() async {
+      await isar.documentModels.clear();
+      await isar.pageModels.clear();
+      await isar.folderModels.clear();
+    });
+  }
 }

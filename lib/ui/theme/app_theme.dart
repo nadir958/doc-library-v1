@@ -7,6 +7,22 @@ class AppTheme {
   static const Color surfaceColor = Color(0xFF1E293B); // Slate 800
   static const Color accentColor = Color(0xFF10B981); // Emerald
   
+  static ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.light,
+    primaryColor: primaryColor,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: primaryColor,
+      brightness: Brightness.light,
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
+      elevation: 0,
+      centerTitle: true,
+    ),
+  );
+
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,

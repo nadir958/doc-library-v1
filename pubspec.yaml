@@ -10,6 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.1
   
   # State Management
   flutter_riverpod: ^2.4.9
@@ -26,8 +29,8 @@ dependencies:
 
   # Utilities
   path_provider: ^2.1.1
+  shared_preferences: ^2.2.2
   path: ^1.8.3
-  intl: ^0.18.1
   pdf: ^3.10.7
   image_picker: ^1.0.4
   share_plus: ^7.2.1
@@ -46,3 +49,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

@@ -30,12 +30,13 @@ class FolderListNotifier extends StateNotifier<AsyncValue<List<FolderModel>>> {
     }
   }
 
-  Future<void> addFolder(String name) async {
+  Future<int> createFolder(String name) async {
     try {
-      await _repo.createFolder(name);
+      final id = await _repo.createFolder(name);
       await loadFolders();
+      return id;
     } catch (e) {
-      // Gérer l'erreur
+      rethrow;
     }
   }
 

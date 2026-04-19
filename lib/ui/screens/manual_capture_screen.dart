@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../../domain/services/scan_service.dart';
 import 'capture_preview_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ManualCaptureScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -40,7 +41,7 @@ class _ManualCaptureScreenState extends State<ManualCaptureScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Capture (${_capturedImages.length} pages)'),
+        title: Text('${AppLocalizations.of(context)!.takePhoto} (${_capturedImages.length})'),
         backgroundColor: Colors.transparent,
         actions: [
           if (_capturedImages.isNotEmpty)
@@ -56,7 +57,7 @@ class _ManualCaptureScreenState extends State<ManualCaptureScreen> {
                   ),
                 );
               },
-              child: const Text('Terminer', style: TextStyle(color: Colors.white, fontSize: 16)),
+              child: Text(AppLocalizations.of(context)!.save, style: const TextStyle(color: Colors.white, fontSize: 16)),
             ),
         ],
       ),

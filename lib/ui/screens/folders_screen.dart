@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/folder_provider.dart';
 import 'dashboard_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FoldersScreen extends ConsumerWidget {
   const FoldersScreen({super.key});
@@ -10,9 +11,10 @@ class FoldersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final foldersAsync = ref.watch(folderListProvider);
 
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mes Dossiers', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.folders, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: foldersAsync.when(
         data: (folders) {
@@ -23,12 +25,12 @@ class FoldersScreen extends ConsumerWidget {
                 children: [
                   const Icon(Icons.folder_open, size: 64, color: Colors.white24),
                   const SizedBox(height: 16),
-                  const Text('Aucun dossier créé.', style: TextStyle(color: Colors.white54)),
+                  Text(l10n.noDocuments, style: const TextStyle(color: Colors.white54)),
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () => _showAddFolderDialog(context, ref),
                     icon: const Icon(Icons.add),
-                    label: const Text('Nouveau Dossier'),
+                    label: Text(l10n.newFolder),
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.indigoAccent),
                   ),
                 ],
@@ -97,16 +99,17 @@ class FoldersScreen extends ConsumerWidget {
   }
 
   void _showAddFolderDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xFF1E293B),
-        title: const Text('Nouveau Dossier'),
+        title: Text(l10n.newFolder),
         content: TextField(
           controller: controller,
-          decoration: const InputDecoration(
-            hintText: 'Nom du dossier',
+          decoration: InputDecoration(
+            hintText: l10n.folderName,
             filled: true,
             fillColor: Colors.black12,
           ),
@@ -115,17 +118,17 @@ class FoldersScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Annuler', style: TextStyle(color: Colors.white54)),
+            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white54)),
           ),
           ElevatedButton(
             onPressed: () {
               if (controller.text.isNotEmpty) {
-                ref.read(folderListProvider.notifier).addFolder(controller.text);
+                ref.read(folderListProvider.notifier).createFolder(controller.text);
                 Navigator.pop(ctx);
               }
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.indigoAccent),
-            child: const Text('Créer'),
+            child: Text(l10n.create),
           ),
         ],
       ),

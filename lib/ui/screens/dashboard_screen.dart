@@ -9,6 +9,7 @@ import 'document_detail_screen.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
 import 'settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   final FolderModel? folder;
@@ -36,11 +37,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final docsAsync = ref.watch(documentListProvider);
     final allTags = ref.watch(allTagsProvider);
-
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.folder != null ? 'Dossier: ${widget.folder!.name}' : 'Ma Bibliothèque', 
+          widget.folder != null ? '${l10n.folders}: ${widget.folder!.name}' : l10n.appTitle, 
           style: const TextStyle(fontWeight: FontWeight.bold)
         ),
         actions: [
@@ -59,7 +60,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Rechercher un document...',
+                hintText: l10n.searchHint,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty 
                     ? IconButton(
@@ -133,7 +134,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             child: docsAsync.when(
               data: (docs) {
                 if (docs.isEmpty) {
-                  return const Center(child: Text('Aucun document trouvé.'));
+                  return Center(child: Text(l10n.noDocuments));
                 }
                 return ListView.builder(
                   itemCount: docs.length,
@@ -195,7 +196,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showCaptureOptions(context),
-        label: const Text('Scanner'),
+        label: Text(l10n.addDocument),
         icon: const Icon(Icons.add_a_photo),
         backgroundColor: Colors.indigoAccent,
       ),
@@ -235,8 +236,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               const Divider(color: Colors.white10),
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.lightBlueAccent),
-                title: const Text('Capture Manuelle'),
-                subtitle: const Text('Prenez une ou plusieurs photos'),
+                title: Text(l10n.takePhoto),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final cameras = await availableCameras();
@@ -251,8 +251,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               const Divider(color: Colors.white10),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Colors.orangeAccent),
-                title: const Text('Importer de la Galerie'),
-                subtitle: const Text('Sélectionnez des images existantes'),
+                title: Text(l10n.fromGallery),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final picker = ImagePicker();

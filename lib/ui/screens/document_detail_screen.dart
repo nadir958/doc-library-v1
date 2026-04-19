@@ -11,6 +11,7 @@ import '../providers/document_provider.dart';
 import '../providers/capture_provider.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final documentPagesProvider = FutureProvider.family<List<PageModel>, int>((ref, docId) async {
   final repo = ref.watch(documentRepositoryProvider);
@@ -58,7 +59,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
     });
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Modifications enregistrées')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.save)),
       );
     }
   }
@@ -67,11 +68,11 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer la page ?'),
-        content: const Text('Cette action est irréversible.'),
+        title: Text(AppLocalizations.of(context)!.delete),
+        content: Text(AppLocalizations.of(context)!.deleteDocumentConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annuler')),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Supprimer', style: TextStyle(color: Colors.red))),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(AppLocalizations.of(context)!.cancel)),
+          TextButton(onPressed: () => Navigator.pop(context, true), child: Text(AppLocalizations.of(context)!.delete, style: const TextStyle(color: Colors.red))),
         ],
       ),
     );
@@ -94,8 +95,8 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
             ? TextField(
                 controller: _titleController,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  hintText: 'Titre du document',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.appTitle,
                   border: InputBorder.none,
                 ),
               )
@@ -112,6 +113,26 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               onPressed: () => setState(() => _isEditing = true),
             ),
           IconButton(
+            icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+            onPressed: () async {
+              final confirmed = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Supprimer le document ?'),
+                  content: const Text('Toutes les pages seront supprimées.'),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annuler')),
+                    TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Supprimer', style: TextStyle(color: Colors.red))),
+                  ],
+                ),
+              );
+              if (confirmed == true && mounted) {
+                await ref.read(documentListProvider.notifier).deleteDocument(widget.document.id!);
+                if (context.mounted) Navigator.pop(context);
+              }
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.share),
             onPressed: () async {
               final exportService = ExportService();
@@ -119,7 +140,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               if (pages.isNotEmpty) {
                 final file = await exportService.generatePdf(widget.document, pages);
                 await Share.shareXFiles([XFile(file.path)],
-                    text: 'Voici mon document : ${widget.document.title}');
+                    text: '${AppLocalizations.of(context)!.share}: ${widget.document.title}');
               }
             },
           ),
@@ -131,9 +152,9 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (pages.isEmpty)
-                const SizedBox(
+                SizedBox(
                   height: 200,
-                  child: Center(child: Text("Aucune page dans ce document.")),
+                  child: Center(child: Text(AppLocalizations.of(context)!.noPages)),
                 )
               else
                 SizedBox(
@@ -177,9 +198,9 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Tags Section
-                    const Text(
-                      "Tags",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.tags,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Wrap(
@@ -205,23 +226,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    const Text(
-                      "Texte extrait (OCR)",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E293B),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        widget.document.fullOcrSearchText ?? "Aucun texte extrait.",
-                        style: const TextStyle(color: Colors.white70),
-                      ),
-                    ),
+                    // Le texte OCR est conservé dans le modèle pour la recherche mais n'est pas affiché à l'utilisateur.
                   ],
                 ),
               ),
@@ -242,16 +247,16 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Ajouter un tag'),
+        title: Text(AppLocalizations.of(context)!.addTag),
         content: TextField(
           controller: _tagController,
           autofocus: true,
-          decoration: const InputDecoration(hintText: 'Nom du tag'),
+          decoration: InputDecoration(hintText: AppLocalizations.of(context)!.tags),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -263,7 +268,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               }
               Navigator.pop(context);
             },
-            child: const Text('Ajouter'),
+            child: Text(AppLocalizations.of(context)!.add),
           ),
         ],
       ),
@@ -285,7 +290,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
             children: [
                ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.lightBlueAccent),
-                title: const Text('Prendre une photo'),
+                title: Text(AppLocalizations.of(context)!.takePhoto),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final cameras = await availableCameras();
@@ -308,7 +313,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               const Divider(color: Colors.white10),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Colors.orangeAccent),
-                title: const Text('Depuis la galerie'),
+                title: Text(AppLocalizations.of(context)!.fromGallery),
                 onTap: () async {
                   Navigator.pop(ctx);
                   final picker = ImagePicker();

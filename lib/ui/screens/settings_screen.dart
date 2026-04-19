@@ -1,35 +1,53 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../providers/settings_provider.dart';
+import '../../data/repositories/document_repository.dart';
+import '../providers/document_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final settings = ref.watch(settingsProvider);
+    final settingsNotifier = ref.read(settingsProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: Text(l10n.settings),
       ),
       body: ListView(
         children: [
-          const _SectionHeader(title: "Général"),
+          _SectionHeader(title: l10n.general),
           ListTile(
             leading: const Icon(Icons.language),
-            title: const Text("Langue"),
-            subtitle: const Text("Français"),
-            onTap: () {},
+            title: Text(l10n.language),
+            subtitle: Text(
+              settings.locale?.languageCode == 'fr' ? 'Français' : 
+              settings.locale?.languageCode == 'en' ? 'English' :
+              settings.locale?.languageCode == 'ar' ? 'العربية' : 'Système'
+            ),
+            onTap: () {
+              _showLanguageDialog(context, settingsNotifier);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.dark_mode),
-            title: const Text("Thème"),
-            subtitle: const Text("Sombre (Système)"),
-            trailing: Switch(value: true, onChanged: (val) {}),
+            title: Text(l10n.theme),
+            subtitle: Text(
+              settings.themeMode == ThemeMode.system ? 'Système' :
+              settings.themeMode == ThemeMode.dark ? 'Sombre' : 'Clair'
+            ),
+            onTap: () {
+              _showThemeDialog(context, settingsNotifier);
+            },
           ),
           const Divider(),
-          const _SectionHeader(title: "Sécurité"),
+          _SectionHeader(title: l10n.security),
           ListTile(
             leading: const Icon(Icons.lock),
-            title: const Text("Verrouillage Biométrique"),
+            title: Text(l10n.biometricLock),
             subtitle: const Text("Désactivé pour le moment"),
             trailing: Switch(value: false, onChanged: (val) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -38,7 +56,7 @@ class SettingsScreen extends ConsumerWidget {
             }),
           ),
           const Divider(),
-          const _SectionHeader(title: "Données"),
+          _SectionHeader(title: l10n.data),
           ListTile(
             leading: const Icon(Icons.cloud_off, color: Colors.orangeAccent),
             title: const Text("Synchronisation Cloud"),
@@ -47,19 +65,19 @@ class SettingsScreen extends ConsumerWidget {
           ),
           ListTile(
             leading: const Icon(Icons.delete_forever, color: Colors.redAccent),
-            title: const Text("Effacer toutes les données"),
+            title: Text(l10n.deleteAllData),
             onTap: () {
-              _showDeleteAllDialog(context);
+              _showDeleteAllDialog(context, ref);
             },
           ),
           const Divider(),
-          const _SectionHeader(title: "À propos"),
-          const ListTile(
-            title: Text("Version"),
-            trailing: Text("1.0.0"),
+          _SectionHeader(title: l10n.about),
+          ListTile(
+            title: Text(l10n.version),
+            trailing: const Text("1.0.0"),
           ),
           ListTile(
-            title: const Text("Développé par Antigravity"),
+            title: Text(l10n.developedBy),
             subtitle: const Text("Privacy-First Document Library"),
             onTap: () {},
           ),
@@ -68,17 +86,100 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  void _showDeleteAllDialog(BuildContext context) {
+  void _showLanguageDialog(BuildContext context, SettingsNotifier notifier) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Tout effacer ?"),
+        title: const Text("Sélectionner la langue"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text("Système"),
+              onTap: () {
+                notifier.setLocale(null);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Français"),
+              onTap: () {
+                notifier.setLocale(const Locale('fr'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("English"),
+              onTap: () {
+                notifier.setLocale(const Locale('en'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("العربية"),
+              onTap: () {
+                notifier.setLocale(const Locale('ar'));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showThemeDialog(BuildContext context, SettingsNotifier notifier) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Sélectionner le thème"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text("Système"),
+              onTap: () {
+                notifier.setThemeMode(ThemeMode.system);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Clair"),
+              onTap: () {
+                notifier.setThemeMode(ThemeMode.light);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text("Sombre"),
+              onTap: () {
+                notifier.setThemeMode(ThemeMode.dark);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteAllDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteAllData),
         content: const Text("Toutes vos données locales seront supprimées définitivement."),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Annuler")),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
           TextButton(
-            onPressed: () => Navigator.pop(context), 
-            child: const Text("Tout supprimer", style: TextStyle(color: Colors.red))
+            onPressed: () async {
+               final repo = ref.read(documentRepositoryProvider);
+               await repo.deleteAllData();
+               ref.read(documentListProvider.notifier).loadDocuments();
+               if (context.mounted) Navigator.pop(context);
+            }, 
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red))
           ),
         ],
       ),

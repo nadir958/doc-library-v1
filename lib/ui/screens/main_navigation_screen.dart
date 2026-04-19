@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'folders_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -34,14 +35,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         backgroundColor: const Color(0xFF0F172A),
         selectedItemColor: Colors.indigoAccent,
         unselectedItemColor: Colors.white54,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.description),
-            label: 'Documents',
+            icon: const Icon(Icons.description),
+            label: AppLocalizations.of(context)!.dashboard,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.folder),
-            label: 'Dossiers',
+            icon: const Icon(Icons.folder),
+            label: AppLocalizations.of(context)!.folders,
           ),
         ],
       ),

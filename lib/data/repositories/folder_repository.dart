@@ -12,13 +12,13 @@ class FolderRepository {
   }
 
   // Créer un dossier
-  Future<void> createFolder(String name) async {
+  Future<int> createFolder(String name) async {
     final folder = FolderModel()
       ..name = name
       ..createdAt = DateTime.now();
     
-    await isar.writeTxn(() async {
-      await isar.folderModels.put(folder);
+    return await isar.writeTxn(() async {
+      return await isar.folderModels.put(folder);
     });
   }
 
