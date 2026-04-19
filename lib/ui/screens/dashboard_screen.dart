@@ -203,6 +203,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           "Commencez à sécuriser vos documents dès maintenant.",
                           style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.4)),
                         ),
+                        const SizedBox(height: 120), // Push content up above bottom nav
                       ],
                     ),
                   ),
@@ -314,7 +315,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 90),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           boxShadow: [

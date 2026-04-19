@@ -99,6 +99,7 @@ class FoldersScreen extends ConsumerWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                       ),
+                      const SizedBox(height: 120), // Push content up above bottom nav
                     ],
                   ),
                 ),
@@ -200,7 +201,9 @@ class FoldersScreen extends ConsumerWidget {
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 90),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           gradient: LinearGradient(
