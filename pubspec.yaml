@@ -36,7 +36,7 @@ dependencies:
   share_plus: ^7.2.1
   local_auth: ^2.1.6
   opencv_dart: ^1.4.3
-  google_fonts: ^8.0.2
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
