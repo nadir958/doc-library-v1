@@ -204,6 +204,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   void _showCaptureOptions(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF1E293B),
