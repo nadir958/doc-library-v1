@@ -42,14 +42,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.folder != null ? '${l10n.folders}: ${widget.folder!.name}' : l10n.appTitle,
-          style: theme.textTheme.titleLarge,
-        ),
-        actions: const [],
-      ),
-      body: CustomScrollView(
+      body: SafeArea(
+        child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(

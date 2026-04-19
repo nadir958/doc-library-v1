@@ -20,10 +20,8 @@ class FoldersScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.folders, style: theme.textTheme.titleLarge),
-      ),
-      body: CustomScrollView(
+      body: SafeArea(
+        child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
