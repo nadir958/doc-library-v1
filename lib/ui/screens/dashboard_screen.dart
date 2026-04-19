@@ -268,27 +268,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                           Icon(Icons.chevron_right, size: 18, color: theme.colorScheme.onSurface.withOpacity(0.1)),
                                         ],
                                       ),
-                                      const SizedBox(height: 4),
-                                      if (doc.folderId != null)
-                                        Text(
-                                          "DANS LE VAULT",
-                                          style: TextStyle(
-                                            fontSize: 9,
-                                            color: theme.colorScheme.primary,
-                                            fontWeight: FontWeight.w900,
-                                            letterSpacing: 1,
-                                          ),
-                                        )
-                                      else
-                                        Text(
-                                          "SANS DOSSIER",
-                                          style: TextStyle(
-                                            fontSize: 9,
-                                            color: theme.colorScheme.onSurface.withOpacity(0.3),
-                                            fontWeight: FontWeight.w900,
-                                            letterSpacing: 1,
-                                          ),
-                                        ),
                                       const SizedBox(height: 8),
                                       Wrap(
                                         spacing: 4,
