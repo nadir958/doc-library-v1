@@ -31,7 +31,10 @@ class FoldersScreen extends ConsumerWidget {
                     onPressed: () => _showAddFolderDialog(context, ref),
                     icon: const Icon(Icons.add),
                     label: Text(l10n.newFolder),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.indigoAccent),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigoAccent,
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                 ],
               ),
