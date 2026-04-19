@@ -38,186 +38,311 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final docsAsync = ref.watch(documentListProvider);
     final allTags = ref.watch(allTagsProvider);
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.folder != null ? '${l10n.folders}: ${widget.folder!.name}' : l10n.appTitle, 
-          style: const TextStyle(fontWeight: FontWeight.bold)
+          widget.folder != null ? '${l10n.folders}: ${widget.folder!.name}' : l10n.appTitle,
+          style: theme.textTheme.titleLarge,
         ),
         actions: [
           if (widget.folder == null)
             IconButton(
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.settings_outlined),
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen())),
             ),
         ],
       ),
-      body: Column(
-        children: [
-          // Barre de recherche
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.searchHint,
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: _searchController.text.isNotEmpty 
-                    ? IconButton(
-                        icon: const Icon(Icons.clear), 
-                        onPressed: () {
-                          _searchController.clear();
-                          if (widget.folder != null) {
-                            ref.read(documentListProvider.notifier).filterByFolder(widget.folder!.id);
-                          } else {
-                            ref.read(documentListProvider.notifier).search("");
-                          }
-                        }
-                      ) 
-                    : null,
-                filled: true,
-                fillColor: const Color(0xFF1E293B),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              onChanged: (val) {
-                if (val.isEmpty && widget.folder != null) {
-                  ref.read(documentListProvider.notifier).filterByFolder(widget.folder!.id);
-                } else {
-                  ref.read(documentListProvider.notifier).search(val);
-                }
-              },
-            ),
-          ),
-          
-          // Organisation par Tags (Filtres)
-          if (allTags.isNotEmpty && widget.folder == null)
-            SizedBox(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: allTags.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: FilterChip(
-                        label: Text(l10n.all),
-                        selected: _selectedTag == null,
-                        onSelected: (selected) {
-                          setState(() => _selectedTag = null);
-                          ref.read(documentListProvider.notifier).loadDocuments();
-                        },
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Editorial Header
+                  if (widget.folder == null) ...[
+                    RichText(
+                      text: TextSpan(
+                        style: theme.textTheme.headlineLarge?.copyWith(height: 1.1),
+                        children: [
+                          const TextSpan(text: "Gérez votre "),
+                          TextSpan(
+                            text: "empreinte digitale",
+                            style: TextStyle(
+                              foreground: Paint()
+                                ..shader = const LinearGradient(
+                                  colors: [Color(0xFFC0C1FF), Color(0xFF4CD7F6)],
+                                ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                            ),
+                          ),
+                          const TextSpan(text: " en toute sécurité."),
+                        ],
                       ),
-                    );
-                  }
-                  final tag = allTags[index - 1];
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: FilterChip(
-                      label: Text(tag),
-                      selected: _selectedTag == tag,
-                      onSelected: (selected) {
-                        setState(() => _selectedTag = selected ? tag : null);
-                        ref.read(documentListProvider.notifier).filterByTag(_selectedTag);
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+
+                  // Search Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: l10n.searchHint,
+                        prefixIcon: const Icon(Icons.search, color: Colors.indigoAccent),
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  if (widget.folder != null) {
+                                    ref.read(documentListProvider.notifier).filterByFolder(widget.folder!.id);
+                                  } else {
+                                    ref.read(documentListProvider.notifier).search("");
+                                  }
+                                },
+                              )
+                            : null,
+                        filled: true,
+                        fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                      ),
+                      onChanged: (val) {
+                        if (val.isEmpty && widget.folder != null) {
+                          ref.read(documentListProvider.notifier).filterByFolder(widget.folder!.id);
+                        } else {
+                          ref.read(documentListProvider.notifier).search(val);
+                        }
                       },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
+                  const SizedBox(height: 24),
 
-          Expanded(
-            child: docsAsync.when(
-              data: (docs) {
-                if (docs.isEmpty) {
-                  return Center(child: Text(l10n.noDocuments));
-                }
-                return ListView.builder(
-                  itemCount: docs.length,
-                  padding: const EdgeInsets.all(16),
-                  itemBuilder: (context, index) {
-                    final doc = docs[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      color: const Color(0xFF1E293B),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.indigoAccent.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.description, color: Colors.indigoAccent),
-                        ),
-                        title: Text(doc.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('${doc.tags.length} ${l10n.tags} • ${doc.createdAt.day}/${doc.createdAt.month}/${doc.createdAt.year}'),
-                            if (doc.tags.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Wrap(
-                                  spacing: 4,
-                                  children: doc.tags.take(3).map((t) => Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white10,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(t, style: const TextStyle(fontSize: 10)),
-                                  )).toList(),
-                                ),
+                  // Tag Filters
+                  if (allTags.isNotEmpty && widget.folder == null)
+                    SizedBox(
+                      height: 40,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: allTags.length + 1,
+                        itemBuilder: (context, index) {
+                          final isSelected = index == 0 ? _selectedTag == null : _selectedTag == allTags[index - 1];
+                          final label = index == 0 ? l10n.all : allTags[index - 1];
+
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: ChoiceChip(
+                              label: Text(label),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                if (index == 0) {
+                                  setState(() => _selectedTag = null);
+                                  ref.read(documentListProvider.notifier).loadDocuments();
+                                } else {
+                                  final tag = allTags[index - 1];
+                                  setState(() => _selectedTag = selected ? tag : null);
+                                  ref.read(documentListProvider.notifier).filterByTag(_selectedTag);
+                                }
+                              },
+                              backgroundColor: theme.colorScheme.surfaceVariant,
+                              selectedColor: theme.colorScheme.secondary,
+                              labelStyle: TextStyle(
+                                color: isSelected ? theme.colorScheme.onSecondary : theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
                               ),
-                          ],
-                        ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DocumentDetailScreen(document: doc)),
-                        ),
-                        onLongPress: () async {
-                          final confirmed = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: Text(l10n.deleteDocument),
-                              content: Text(l10n.deleteDocumentConfirm),
-                              actions: [
-                                TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
-                                TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.delete, style: const TextStyle(color: Colors.red))),
-                              ],
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              side: BorderSide.none,
+                              showCheckmark: false,
                             ),
                           );
-                          if (confirmed == true) {
-                            ref.read(documentListProvider.notifier).deleteDocument(doc.id!);
-                          }
                         },
                       ),
-                    );
-                  },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Erreur: $err')),
+                    ),
+                ],
+              ),
             ),
+          ),
+          docsAsync.when(
+            data: (docs) {
+              if (docs.isEmpty) {
+                return SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.folder_off_outlined, size: 64, color: Colors.white10),
+                        const SizedBox(height: 16),
+                        Text(l10n.noDocuments, style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white24)),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final doc = docs[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.white.withOpacity(0.05)),
+                        ),
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DocumentDetailScreen(document: doc)),
+                          ),
+                          onLongPress: () => _showDeleteDialog(context, doc, l10n),
+                          borderRadius: BorderRadius.circular(20),
+                          child: Row(
+                            children: [
+                              // Thumbnail Placeholder
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.surfaceVariant,
+                                  borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      theme.colorScheme.surfaceVariant,
+                                      theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                                    ],
+                                  ),
+                                ),
+                                child: const Icon(Icons.description_outlined, color: Colors.indigoAccent),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.between,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              doc.title,
+                                              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          const Icon(Icons.chevron_right, size: 18, color: Colors.white24),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Wrap(
+                                        spacing: 4,
+                                        children: [
+                                          ...doc.tags.take(2).map((t) => Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: theme.colorScheme.surfaceVariant,
+                                              borderRadius: BorderRadius.circular(4),
+                                            ),
+                                            child: Text(t, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.indigoAccent)),
+                                          )),
+                                          if (doc.tags.length > 2)
+                                            Text("+${doc.tags.length - 2}", style: const TextStyle(fontSize: 10, color: Colors.white24)),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.calendar_today, size: 12, color: Colors.white38),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            '${doc.createdAt.day}/${doc.createdAt.month}/${doc.createdAt.year}',
+                                            style: const TextStyle(fontSize: 11, color: Colors.white38),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: docs.length,
+                  ),
+                ),
+              );
+            },
+            loading: () => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+            error: (err, stack) => SliverFillRemaining(child: Center(child: Text('Erreur: $err'))),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showCaptureOptions(context),
-        label: Text(l10n.addDocument),
-        icon: const Icon(Icons.add_a_photo),
-        backgroundColor: Colors.indigoAccent,
-        foregroundColor: Colors.white,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFC0C1FF).withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+          gradient: const LinearGradient(
+            colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+          ),
+        ),
+        child: FloatingActionButton.extended(
+          onPressed: () => _showCaptureOptions(context),
+          label: Text(l10n.addDocument, style: const TextStyle(fontWeight: FontWeight.bold)),
+          icon: const Icon(Icons.add_a_photo),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
       ),
     );
+  }
+
+  void _showDeleteDialog(BuildContext context, DocumentModel doc, AppLocalizations l10n) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteDocument),
+        content: Text(l10n.deleteDocumentConfirm),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      ref.read(documentListProvider.notifier).deleteDocument(doc.id!);
+    }
   }
 
   void _showCaptureOptions(BuildContext context) {

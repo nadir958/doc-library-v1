@@ -21,19 +21,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get searchHint => 'Search for a document...';
+  String get searchHint => 'Search document...';
 
   @override
   String get noDocuments => 'No documents found.';
 
   @override
-  String get addDocument => 'Add a document';
+  String get addDocument => 'Add Document';
 
   @override
-  String get takePhoto => 'Take a photo';
+  String get takePhoto => 'Take Photo';
 
   @override
-  String get fromGallery => 'From gallery';
+  String get fromGallery => 'From Gallery';
 
   @override
   String get general => 'General';
@@ -96,16 +96,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteDocumentConfirm => 'All pages will be deleted.';
 
   @override
-  String get newFolder => 'New folder';
+  String get newFolder => 'New Folder';
 
   @override
-  String get folderName => 'Folder name';
+  String get folderName => 'Folder Name';
 
   @override
   String get create => 'Create';
 
   @override
-  String get selectFolder => 'Destination folder';
+  String get selectFolder => 'Destination Folder';
 
   @override
   String get rootFolder => 'No folder (Root)';
@@ -117,8 +117,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noPages => 'No pages in this document.';
 
   @override
-  String get capturePreview => 'Capture preview';
+  String get capturePreview => 'Capture Preview';
 
   @override
-  String get addPages => 'Add pages';
+  String get addPages => 'Add Pages';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get selectTheme => 'Select Theme';
+
+  @override
+  String get viewDocuments => 'View Documents';
+
+  @override
+  String get disabledForNow => 'Disabled for now';
+
+  @override
+  String get comingSoon => 'Coming soon in settings';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get addNote => 'Add a note';
+
+  @override
+  String get smartScan => 'Smart Scan';
+
+  @override
+  String get smartScanDesc => 'Automatic detection and correction';
+
+  @override
+  String get system => 'System';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
 }

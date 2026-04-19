@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Palette de couleurs Premium
-  static const Color primaryColor = Color(0xFF6366F1); // Indigo moderne
-  static const Color backgroundColor = Color(0xFF0F172A); // Slate 900
-  static const Color surfaceColor = Color(0xFF1E293B); // Slate 800
-  static const Color accentColor = Color(0xFF10B981); // Emerald
-  
+  // Palette de couleurs Stitch (Premium Vault)
+  static const Color primaryColor = Color(0xFFC0C1FF); // Primary (Light Lavender)
+  static const Color primaryContainerColor = Color(0xFF8083FF); // Primary Container (Indigo)
+  static const Color secondaryColor = Color(0xFF4CD7F6); // Secondary (Cyan)
+  static const Color tertiaryColor = Color(0xFF2FD9F4); // Tertiary (Bright Blue)
+  static const Color backgroundColor = Color(0xFF0C1322); // Background (Deep Navy)
+  static const Color surfaceColor = Color(0xFF191F2F); // Surface (Slate)
+  static const Color surfaceVariantColor = Color(0xFF2E3545); // Surface Variant
+  static const Color onSurfaceColor = Color(0xFFDCE2F7); // On Surface
+  static const Color onSurfaceVariantColor = Color(0xFFC7C4D7); // On Surface Variant
+  static const Color errorColor = Color(0xFFFFB4AB); // Error (Soft Red)
+
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
@@ -26,46 +33,60 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    primaryColor: primaryColor,
     scaffoldBackgroundColor: backgroundColor,
     
     colorScheme: const ColorScheme.dark(
       primary: primaryColor,
-      secondary: accentColor,
+      primaryContainer: primaryContainerColor,
+      secondary: secondaryColor,
+      tertiary: tertiaryColor,
       surface: surfaceColor,
-      background: backgroundColor,
+      surfaceVariant: surfaceVariantColor,
+      onSurface: onSurfaceColor,
+      onSurfaceVariant: onSurfaceVariantColor,
+      error: errorColor,
     ),
     
     appBarTheme: const AppBarTheme(
-      backgroundColor: backgroundColor,
+      backgroundColor: Color(0xCC141B2B), // Blur equivalent handled in UI if possible
       elevation: 0,
-      centerTitle: true,
+      centerTitle: false,
       titleTextStyle: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: onSurfaceColor,
+        fontFamily: 'Manrope',
       ),
     ),
     
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: surfaceColor,
-      elevation: 4,
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
     ),
     
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: primaryColor,
-      foregroundColor: Colors.white,
+      backgroundColor: Colors.transparent, // Handled with gradient in UI
+      foregroundColor: backgroundColor,
     ),
     
-    textTheme: const TextTheme(
-      headlineMedium: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
+    textTheme: GoogleFonts.interTextTheme().copyWith(
+      headlineLarge: GoogleFonts.manrope(
+        fontWeight: FontWeight.w800,
+        color: onSurfaceColor,
       ),
-      bodyLarge: TextStyle(color: Colors.white70),
+      headlineMedium: GoogleFonts.manrope(
+        fontWeight: FontWeight.w700,
+        color: onSurfaceColor,
+      ),
+      titleLarge: GoogleFonts.manrope(
+        fontWeight: FontWeight.w700,
+        color: onSurfaceColor,
+      ),
+      bodyLarge: const TextStyle(color: onSurfaceColor),
+      bodyMedium: const TextStyle(color: onSurfaceVariantColor),
     ),
   );
 }

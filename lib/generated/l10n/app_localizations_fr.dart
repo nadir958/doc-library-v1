@@ -121,4 +121,43 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get addPages => 'Ajouter des pages';
+
+  @override
+  String get selectLanguage => 'Sélectionner la langue';
+
+  @override
+  String get selectTheme => 'Sélectionner le thème';
+
+  @override
+  String get viewDocuments => 'Voir les documents';
+
+  @override
+  String get disabledForNow => 'Désactivé pour le moment';
+
+  @override
+  String get comingSoon => 'Bientôt disponible dans les réglages';
+
+  @override
+  String get all => 'Tous';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get addNote => 'Ajouter une note';
+
+  @override
+  String get smartScan => 'Smart Scan';
+
+  @override
+  String get smartScanDesc => 'Détection automatique et correction';
+
+  @override
+  String get system => 'Système';
+
+  @override
+  String get light => 'Clair';
+
+  @override
+  String get dark => 'Sombre';
 }

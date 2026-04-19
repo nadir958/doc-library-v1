@@ -327,6 +327,84 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ajouter des pages'**
   String get addPages;
+
+  /// No description provided for @selectLanguage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sélectionner la langue'**
+  String get selectLanguage;
+
+  /// No description provided for @selectTheme.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sélectionner le thème'**
+  String get selectTheme;
+
+  /// No description provided for @viewDocuments.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir les documents'**
+  String get viewDocuments;
+
+  /// No description provided for @disabledForNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Désactivé pour le moment'**
+  String get disabledForNow;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bientôt disponible dans les réglages'**
+  String get comingSoon;
+
+  /// No description provided for @all.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tous'**
+  String get all;
+
+  /// No description provided for @notes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @addNote.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une note'**
+  String get addNote;
+
+  /// No description provided for @smartScan.
+  ///
+  /// In fr, this message translates to:
+  /// **'Smart Scan'**
+  String get smartScan;
+
+  /// No description provided for @smartScanDesc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Détection automatique et correction'**
+  String get smartScanDesc;
+
+  /// No description provided for @system.
+  ///
+  /// In fr, this message translates to:
+  /// **'Système'**
+  String get system;
+
+  /// No description provided for @light.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clair'**
+  String get light;
+
+  /// No description provided for @dark.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sombre'**
+  String get dark;
 }
 
 class _AppLocalizationsDelegate

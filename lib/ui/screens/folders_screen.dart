@@ -10,120 +10,204 @@ class FoldersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final foldersAsync = ref.watch(folderListProvider);
-
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.folders, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.folders, style: theme.textTheme.titleLarge),
       ),
-      body: foldersAsync.when(
-        data: (folders) {
-          if (folders.isEmpty) {
-            return Center(
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.folder_open, size: 64, color: Colors.white24),
-                  const SizedBox(height: 16),
-                  Text(l10n.noDocuments, style: const TextStyle(color: Colors.white54)),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    onPressed: () => _showAddFolderDialog(context, ref),
-                    icon: const Icon(Icons.add),
-                    label: Text(l10n.newFolder),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigoAccent,
-                      foregroundColor: Colors.white,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.folders,
+                        style: theme.textTheme.headlineLarge,
+                      ),
+                      IconButton.filled(
+                        onPressed: () => _showAddFolderDialog(context, ref),
+                        icon: const Icon(Icons.create_new_folder_outlined),
+                        style: IconButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primaryContainer,
+                          foregroundColor: theme.colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Organisez vos documents sensibles dans des coffres chiffrés. Chaque dossier est protégé.",
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ],
               ),
-            );
-          }
-          return GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.1,
             ),
-            itemCount: folders.length,
-            itemBuilder: (context, index) {
-              final folder = folders[index];
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DashboardScreen(folder: folder),
+          ),
+          foldersAsync.when(
+            data: (folders) {
+              if (folders.isEmpty) {
+                return SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.folder_open_outlined, size: 64, color: Colors.white10),
+                        const SizedBox(height: 16),
+                        Text(l10n.noDocuments, style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white24)),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: () => _showAddFolderDialog(context, ref),
+                          icon: const Icon(Icons.add),
+                          label: Text(l10n.newFolder),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primaryContainer,
+                            foregroundColor: theme.colorScheme.onPrimaryContainer,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          ),
+                        ),
+                      ],
                     ),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E293B),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white10),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.folder, size: 48, color: Colors.amberAccent),
-                      const SizedBox(height: 12),
-                      Text(
-                        folder.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 4),
-                      // Pour une version plus complexe, on pourrait utiliser un StreamProvider pour compter
-                      const SizedBox(height: 4),
-                      Text(
-                        l10n.viewDocuments,
-                        style: const TextStyle(fontSize: 12, color: Colors.indigoAccent),
-                      ),
-                    ],
+                );
+              }
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 0.9,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final folder = folders[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: Colors.white.withOpacity(0.05)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DashboardScreen(folder: folder),
+                              ),
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(24),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Icon(Icons.folder_rounded, size: 40, color: Colors.amber),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      folder.name,
+                                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      l10n.viewDocuments,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: theme.colorScheme.secondary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: folders.length,
                   ),
                 ),
               );
             },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Erreur: $err')),
+            loading: () => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+            error: (err, stack) => SliverFillRemaining(child: Center(child: Text('Erreur: $err'))),
+          ),
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddFolderDialog(context, ref),
-        backgroundColor: Colors.indigoAccent,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.create_new_folder),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          gradient: const LinearGradient(
+            colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFC0C1FF).withOpacity(0.3),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () => _showAddFolderDialog(context, ref),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.create_new_folder_outlined),
+        ),
       ),
     );
   }
 
   void _showAddFolderDialog(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final controller = TextEditingController();
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        title: Text(l10n.newFolder),
+        backgroundColor: theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(l10n.newFolder, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(
             hintText: l10n.folderName,
             filled: true,
-            fillColor: Colors.black12,
+            fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
           ),
           autofocus: true,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: Colors.white70)),
+            child: Text(l10n.cancel, style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -133,8 +217,9 @@ class FoldersScreen extends ConsumerWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.indigoAccent,
-              foregroundColor: Colors.white,
+              backgroundColor: theme.colorScheme.primaryContainer,
+              foregroundColor: theme.colorScheme.onPrimaryContainer,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             child: Text(l10n.create),
           ),

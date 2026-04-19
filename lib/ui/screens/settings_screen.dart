@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
 import '../providers/settings_provider.dart';
-import '../../data/repositories/document_repository.dart';
 import '../providers/document_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -11,77 +10,111 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final settings = ref.watch(settingsProvider);
     final settingsNotifier = ref.read(settingsProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.settings),
+        title: Text(l10n.settings, style: theme.textTheme.titleLarge),
       ),
       body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         children: [
           _SectionHeader(title: l10n.general),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: Text(l10n.language),
-            subtitle: Text(
-              settings.locale?.languageCode == 'fr' ? 'Français' : 
-              settings.locale?.languageCode == 'en' ? 'English' :
-              settings.locale?.languageCode == 'ar' ? 'العربية' : 'Système'
-            ),
-            onTap: () {
-              _showLanguageDialog(context, settingsNotifier);
-            },
+          _SettingsCard(
+            children: [
+              _SettingsTile(
+                icon: Icons.language_outlined,
+                title: l10n.language,
+                subtitle: settings.locale?.languageCode == 'fr' ? 'Français' : 
+                          settings.locale?.languageCode == 'en' ? 'English' :
+                          settings.locale?.languageCode == 'ar' ? 'العربية' : l10n.system,
+                onTap: () => _showLanguageDialog(context, settingsNotifier),
+              ),
+              const Divider(height: 1, indent: 56, color: Colors.white10),
+              _SettingsTile(
+                icon: Icons.dark_mode_outlined,
+                title: l10n.theme,
+                subtitle: settings.themeMode == ThemeMode.system ? l10n.system :
+                          settings.themeMode == ThemeMode.dark ? l10n.dark : l10n.light,
+                onTap: () => _showThemeDialog(context, settingsNotifier),
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.dark_mode),
-            title: Text(l10n.theme),
-            subtitle: Text(
-              settings.themeMode == ThemeMode.system ? 'Système' :
-              settings.themeMode == ThemeMode.dark ? 'Sombre' : 'Clair'
-            ),
-            onTap: () {
-              _showThemeDialog(context, settingsNotifier);
-            },
-          ),
-          const Divider(),
+          
+          const SizedBox(height: 24),
           _SectionHeader(title: l10n.security),
-          ListTile(
-            leading: const Icon(Icons.lock),
-            title: Text(l10n.biometricLock),
-            subtitle: Text(l10n.disabledForNow),
-            trailing: Switch(value: false, onChanged: (val) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.comingSoon)),
-              );
-            }),
+          _SettingsCard(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.fingerprint_outlined, color: Colors.indigoAccent),
+                title: Text(l10n.biometricLock, style: const TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: Text(l10n.disabledForNow, style: const TextStyle(fontSize: 12)),
+                trailing: Switch.adaptive(
+                  value: false, 
+                  onChanged: (val) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.comingSoon)),
+                    );
+                  },
+                  activeColor: theme.colorScheme.secondary,
+                ),
+              ),
+            ],
           ),
-          const Divider(),
+
+          const SizedBox(height: 24),
           _SectionHeader(title: l10n.data),
-          ListTile(
-            leading: const Icon(Icons.cloud_off, color: Colors.orangeAccent),
-            title: const Text("Synchronisation Cloud"),
-            subtitle: const Text("Non configurée (Phase 2)"),
-            onTap: () {},
+          _SettingsCard(
+            children: [
+              _SettingsTile(
+                icon: Icons.cloud_off_outlined,
+                title: "Synchronisation Cloud",
+                subtitle: "Non configurée (Phase 2)",
+                color: Colors.orangeAccent,
+              ),
+              const Divider(height: 1, indent: 56, color: Colors.white10),
+              _SettingsTile(
+                icon: Icons.delete_forever_outlined,
+                title: l10n.deleteAllData,
+                subtitle: "Action irréversible",
+                color: Colors.redAccent,
+                onTap: () => _showDeleteAllDialog(context, ref),
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(Icons.delete_forever, color: Colors.redAccent),
-            title: Text(l10n.deleteAllData),
-            onTap: () {
-              _showDeleteAllDialog(context, ref);
-            },
-          ),
-          const Divider(),
+
+          const SizedBox(height: 24),
           _SectionHeader(title: l10n.about),
-          ListTile(
-            title: Text(l10n.version),
-            trailing: const Text("1.0.0"),
+          _SettingsCard(
+            children: [
+              _SettingsTile(
+                icon: Icons.info_outline,
+                title: l10n.version,
+                subtitle: "1.0.0 (Stable)",
+              ),
+              const Divider(height: 1, indent: 56, color: Colors.white10),
+              _SettingsTile(
+                icon: Icons.verified_outlined,
+                title: l10n.developedBy,
+                subtitle: "Privacy-First Document Library",
+              ),
+            ],
           ),
-          ListTile(
-            title: Text(l10n.developedBy),
-            subtitle: const Text("Privacy-First Document Library"),
-            onTap: () {},
+          const SizedBox(height: 40),
+          Center(
+            child: Text(
+              "PROTÉGÉ PAR CHIFFREMENT AES-256",
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: Colors.white10,
+                letterSpacing: 2,
+              ),
+            ),
           ),
+          const SizedBox(height: 100),
         ],
       ),
     );
@@ -89,41 +122,20 @@ class SettingsScreen extends ConsumerWidget {
 
   void _showLanguageDialog(BuildContext context, SettingsNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.selectLanguage),
+        backgroundColor: theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(l10n.selectLanguage, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: Text(l10n.system),
-              onTap: () {
-                notifier.setLocale(null);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("Français"),
-              onTap: () {
-                notifier.setLocale(const Locale('fr'));
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("English"),
-              onTap: () {
-                notifier.setLocale(const Locale('en'));
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("العربية"),
-              onTap: () {
-                notifier.setLocale(const Locale('ar'));
-                Navigator.pop(context);
-              },
-            ),
+            _DialogOption(label: l10n.system, onTap: () => notifier.setLocale(null)),
+            _DialogOption(label: "Français", onTap: () => notifier.setLocale(const Locale('fr'))),
+            _DialogOption(label: "English", onTap: () => notifier.setLocale(const Locale('en'))),
+            _DialogOption(label: "العربية", onTap: () => notifier.setLocale(const Locale('ar'))),
           ],
         ),
       ),
@@ -132,34 +144,19 @@ class SettingsScreen extends ConsumerWidget {
 
   void _showThemeDialog(BuildContext context, SettingsNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.selectTheme),
+        backgroundColor: theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(l10n.selectTheme, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: Text(l10n.system),
-              onTap: () {
-                notifier.setThemeMode(ThemeMode.system);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(l10n.light),
-              onTap: () {
-                notifier.setThemeMode(ThemeMode.light);
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(l10n.dark),
-              onTap: () {
-                notifier.setThemeMode(ThemeMode.dark);
-                Navigator.pop(context);
-              },
-            ),
+            _DialogOption(label: l10n.system, onTap: () => notifier.setThemeMode(ThemeMode.system)),
+            _DialogOption(label: l10n.light, onTap: () => notifier.setThemeMode(ThemeMode.light)),
+            _DialogOption(label: l10n.dark, onTap: () => notifier.setThemeMode(ThemeMode.dark)),
           ],
         ),
       ),
@@ -168,21 +165,29 @@ class SettingsScreen extends ConsumerWidget {
 
   void _showDeleteAllDialog(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(l10n.deleteAllData),
+        backgroundColor: theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(l10n.deleteAllData, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: const Text("Toutes vos données locales seront supprimées définitivement."),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
-          TextButton(
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel, style: TextStyle(color: theme.colorScheme.onSurfaceVariant))),
+          ElevatedButton(
             onPressed: () async {
                final repo = ref.read(documentRepositoryProvider);
                await repo.deleteAllData();
                ref.read(documentListProvider.notifier).loadDocuments();
                if (context.mounted) Navigator.pop(context);
             }, 
-            child: Text(l10n.delete, style: const TextStyle(color: Colors.red))
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -197,16 +202,80 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      padding: const EdgeInsets.only(left: 8, bottom: 8),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12,
+        style: const TextStyle(
+          fontSize: 11,
           fontWeight: FontWeight.bold,
-          color: Colors.indigoAccent.withOpacity(0.8),
-          letterSpacing: 1.2,
+          color: Colors.white24,
+          letterSpacing: 1.5,
         ),
       ),
     );
   }
 }
+
+class _SettingsCard extends StatelessWidget {
+  final List<Widget> children;
+  const _SettingsCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
+      ),
+      child: Column(children: children),
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback? onTap;
+  final Color? color;
+
+  const _SettingsTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+    this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: color ?? Colors.indigoAccent),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.white38)),
+      onTap: onTap,
+      trailing: onTap != null ? const Icon(Icons.chevron_right, size: 18, color: Colors.white10) : null,
+    );
+  }
+}
+
+class _DialogOption extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+
+  const _DialogOption({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+      onTap: () {
+        onTap();
+        Navigator.pop(context);
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
+}
+

@@ -21,7 +21,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get searchHint => 'البحث عن مستند...';
+  String get searchHint => 'ابحث عن مستند...';
 
   @override
   String get noDocuments => 'لم يتم العثور على مستندات.';
@@ -108,7 +108,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectFolder => 'مجلد الوجهة';
 
   @override
-  String get rootFolder => 'بدون مجلد (الرئيسية)';
+  String get rootFolder => 'بدون مجلد (الرئيسي)';
 
   @override
   String get ocrInProgress => 'جاري استخراج النص...';
@@ -121,4 +121,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addPages => 'إضافة صفحات';
+
+  @override
+  String get selectLanguage => 'اختر اللغة';
+
+  @override
+  String get selectTheme => 'اختر المظهر';
+
+  @override
+  String get viewDocuments => 'عرض المستندات';
+
+  @override
+  String get disabledForNow => 'معطل حاليا';
+
+  @override
+  String get comingSoon => 'قريبًا في الإعدادات';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get addNote => 'إضافة ملاحظة';
+
+  @override
+  String get smartScan => 'مسح ذكي';
+
+  @override
+  String get smartScanDesc => 'الكشف التلقائي والتصحيح';
+
+  @override
+  String get system => 'النظام';
+
+  @override
+  String get light => 'فاتح';
+
+  @override
+  String get dark => 'داكن';
 }
