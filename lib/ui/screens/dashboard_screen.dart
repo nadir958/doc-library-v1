@@ -160,7 +160,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${doc.tags.length} tags • ${doc.createdAt.day}/${doc.createdAt.month}/${doc.createdAt.year}'),
+                            Text('${doc.tags.length} ${l10n.tags} • ${doc.createdAt.day}/${doc.createdAt.month}/${doc.createdAt.year}'),
                             if (doc.tags.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(top: 4.0),

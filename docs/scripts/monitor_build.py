@@ -3,8 +3,9 @@ import json
 import time
 import sys
 
+import os
 run_id = sys.argv[1]
-token = "VOTRE_GITHUB_TOKEN_ICI"
+token = os.environ.get("GITHUB_TOKEN", "VOTRE_GITHUB_TOKEN_ICI")
 url = f"https://api.github.com/repos/nadir958/doc-library-v1/actions/runs/{run_id}"
 
 headers = {

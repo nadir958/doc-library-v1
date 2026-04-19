@@ -38,7 +38,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.existingDocId != null ? 'Ajouter des pages' : 'Aperçu des captures'),
+        title: Text(widget.existingDocId != null ? l10n.addPages : l10n.capturePreview),
       ),
       body: captureState.when(
         data: (_) => Column(
@@ -147,6 +147,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),
                   backgroundColor: Colors.indigoAccent,
+                  foregroundColor: Colors.white,
                 ),
                 icon: const Icon(Icons.auto_fix_high),
                 label: Text(widget.existingDocId != null ? l10n.addPages : l10n.addDocument),
@@ -154,14 +155,14 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
             ),
           ],
         ),
-        loading: () => const Center(
+        loading: () => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 20),
-              Text("Extraction du texte en cours...",
-                  style: TextStyle(color: Colors.white70)),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              Text(l10n.ocrInProgress,
+                  style: const TextStyle(color: Colors.white70)),
             ],
           ),
         ),
@@ -169,6 +170,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
       ),
     );
   }
+
   void _showNewFolderDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController();
@@ -183,14 +185,15 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () async {
+              if (controller.text.isNotEmpty) {
+                final folderId = await ref.read(folderListProvider.notifier).createFolder(controller.text);
                 setState(() => _selectedFolderId = folderId);
               }
               if (context.mounted) Navigator.pop(context);
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.indigoAccent,
-              foregroundColor: Colors.white,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.indigoAccent),
             child: Text(l10n.create),
           ),
         ],
