@@ -1,0 +1,31 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Android
+.gradle/
+local.properties
+*.pb.gz
+*.aar
+*.jks
+*.keystore
+*.apk
+*.aab
+
+# iOS/macOS
+.generated/
+DerivedData/
+Pods/
+.symlinks/
+profile
+ios/.21_check
+ios/Flutter/.last_build_id
+
+# OS files
+.DS_Store
+Thumbs.db
