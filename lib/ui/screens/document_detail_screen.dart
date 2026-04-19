@@ -9,6 +9,7 @@ import '../../domain/services/export_service.dart';
 import '../../domain/services/scan_service.dart';
 import '../providers/document_provider.dart';
 import '../providers/capture_provider.dart';
+import '../providers/scan_provider.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
