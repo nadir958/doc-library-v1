@@ -128,7 +128,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(l10n.selectLanguage, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.selectLanguage, style: theme.textTheme.titleLarge),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -150,7 +150,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(l10n.selectTheme, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.selectTheme, style: theme.textTheme.titleLarge),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -171,7 +171,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(l10n.deleteAllData, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.deleteAllData, style: theme.textTheme.titleLarge),
         content: const Text("Toutes vos données locales seront supprimées définitivement."),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel, style: TextStyle(color: theme.colorScheme.onSurfaceVariant))),

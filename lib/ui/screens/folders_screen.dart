@@ -201,11 +201,11 @@ class FoldersScreen extends ConsumerWidget {
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Container(
-        margin: const EdgeInsets.only(bottom: 90),
+        margin: const EdgeInsets.only(bottom: 110, left: 16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
+          shape: BoxShape.circle,
           gradient: LinearGradient(
             colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
           ),
@@ -217,13 +217,13 @@ class FoldersScreen extends ConsumerWidget {
             ),
           ],
         ),
-        child: FloatingActionButton.extended(
+        child: FloatingActionButton(
           onPressed: () => _showCaptureOptions(context, ref),
-          label: Text(l10n.addDocument, style: const TextStyle(fontWeight: FontWeight.bold)),
-          icon: const Icon(Icons.add_a_photo),
+          child: const Icon(Icons.add_a_photo, size: 24),
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
+          shape: const CircleBorder(),
         ),
       ),
     );

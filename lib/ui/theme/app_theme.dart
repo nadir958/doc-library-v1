@@ -129,6 +129,14 @@ class AppTheme {
         fontWeight: FontWeight.w700,
         color: onSurfaceColor,
       ),
+      titleMedium: GoogleFonts.manrope(
+        fontWeight: FontWeight.w700,
+        color: onSurfaceColor,
+      ),
+      titleSmall: GoogleFonts.manrope(
+        fontWeight: FontWeight.w600,
+        color: onSurfaceColor,
+      ),
       bodyLarge: const TextStyle(color: onSurfaceColor),
       bodyMedium: const TextStyle(color: onSurfaceVariantColor),
     ),
