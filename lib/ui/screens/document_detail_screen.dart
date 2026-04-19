@@ -308,11 +308,32 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               title: Text(l10n.share),
               onTap: () async {
                 Navigator.pop(ctx);
+                
+                // Show loading indicator
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.loading), duration: const Duration(seconds: 1)),
+                );
+
                 final exportService = ExportService();
-                final pages = ref.read(documentPagesProvider(widget.document.id!)).asData?.value ?? [];
+                final pages = await ref.read(documentPagesProvider(widget.document.id!).future);
+                
                 if (pages.isNotEmpty) {
-                  final file = await exportService.generatePdf(widget.document, pages);
-                  await Share.shareXFiles([XFile(file.path)], text: '${l10n.share}: ${widget.document.title}');
+                  try {
+                    final file = await exportService.generatePdf(widget.document, pages);
+                    await Share.shareXFiles([XFile(file.path)], text: '${l10n.share}: ${widget.document.title}');
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Erreur lors du partage: $e'), backgroundColor: Colors.red),
+                      );
+                    }
+                  }
+                } else {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.noPages), backgroundColor: Colors.orange),
+                    );
+                  }
                 }
               },
             ),
