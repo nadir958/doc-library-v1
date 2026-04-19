@@ -349,6 +349,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   void _showCaptureOptions(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: theme.colorScheme.surface,
@@ -356,6 +357,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       builder: (ctx) {
+        final theme = Theme.of(context);
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Column(
