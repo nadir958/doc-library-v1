@@ -197,7 +197,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "PROPRIÉTÉS",
                     style: TextStyle(
                       fontSize: 10,
@@ -213,7 +213,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                   const Divider(height: 32, color: Colors.white10),
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         "TAGS",
                         style: TextStyle(
                           fontSize: 10,
