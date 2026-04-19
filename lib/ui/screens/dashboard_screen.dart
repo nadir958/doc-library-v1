@@ -73,8 +73,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             text: "empreinte digitale",
                             style: TextStyle(
                               foreground: Paint()
-                                ..shader = const LinearGradient(
-                                  colors: [Color(0xFFC0C1FF), Color(0xFF4CD7F6)],
+                                ..shader = LinearGradient(
+                                  colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
                                 ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
                             ),
                           ),
@@ -90,7 +90,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.2) : theme.colorScheme.primary.withOpacity(0.05),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -186,9 +186,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.folder_off_outlined, size: 64, color: Colors.white10),
+                        Icon(Icons.folder_off_outlined, size: 64, color: theme.colorScheme.onSurface.withOpacity(0.05)),
                         const SizedBox(height: 16),
-                        Text(l10n.noDocuments, style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white24)),
+                        Text(l10n.noDocuments, style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.2))),
                       ],
                     ),
                   ),
@@ -205,7 +205,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         decoration: BoxDecoration(
                           color: theme.colorScheme.surface,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white.withOpacity(0.05)),
+                          border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.05)),
                         ),
                         child: InkWell(
                           onTap: () => Navigator.push(
@@ -251,7 +251,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          const Icon(Icons.chevron_right, size: 18, color: Colors.white24),
+                                          Icon(Icons.chevron_right, size: 18, color: theme.colorScheme.onSurface.withOpacity(0.1)),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
@@ -267,17 +267,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                             child: Text(t, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.indigoAccent)),
                                           )),
                                           if (doc.tags.length > 2)
-                                            Text("+${doc.tags.length - 2}", style: const TextStyle(fontSize: 10, color: Colors.white24)),
+                                            Text("+${doc.tags.length - 2}", style: TextStyle(fontSize: 10, color: theme.colorScheme.onSurface.withOpacity(0.24))),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
                                       Row(
                                         children: [
-                                          const Icon(Icons.calendar_today, size: 12, color: Colors.white38),
+                                          const Icon(Icons.calendar_today, size: 12, color: Colors.indigoAccent),
                                           const SizedBox(width: 4),
                                           Text(
                                             '${doc.createdAt.day}/${doc.createdAt.month}/${doc.createdAt.year}',
-                                            style: const TextStyle(fontSize: 11, color: Colors.white38),
+                                            style: TextStyle(fontSize: 11, color: theme.colorScheme.onSurfaceVariant),
                                           ),
                                         ],
                                       ),
@@ -305,13 +305,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFC0C1FF).withOpacity(0.3),
+              color: theme.colorScheme.primary.withOpacity(0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
           ],
-          gradient: const LinearGradient(
-            colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+          gradient: LinearGradient(
+            colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer.withOpacity(1.0)],
           ),
         ),
         child: FloatingActionButton.extended(
@@ -320,6 +320,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           icon: const Icon(Icons.add_a_photo),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
         ),
       ),
     );
@@ -349,9 +350,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: theme.colorScheme.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       builder: (ctx) {
         return Padding(
@@ -376,7 +377,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   }
                 },
               ),
-              const Divider(color: Colors.white10),
+              Divider(color: theme.colorScheme.onSurface.withOpacity(0.05)),
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.lightBlueAccent),
                 title: Text(l10n.takePhoto),
@@ -391,7 +392,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   }
                 },
               ),
-              const Divider(color: Colors.white10),
+              Divider(color: theme.colorScheme.onSurface.withOpacity(0.05)),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Colors.orangeAccent),
                 title: Text(l10n.fromGallery),

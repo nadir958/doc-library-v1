@@ -411,7 +411,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                   }
                 },
               ),
-              const Divider(color: Colors.white10),
+              const Divider(color: Colors.transparent, height: 1),
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.lightBlueAccent),
                 title: Text(l10n.takePhoto),
@@ -433,7 +433,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                   }
                 },
               ),
-              const Divider(color: Colors.white10),
+              const Divider(color: Colors.transparent, height: 1),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Colors.orangeAccent),
                 title: Text(l10n.fromGallery),
@@ -513,7 +513,7 @@ class _ImmersivePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.1)),
                 ),
                 child: const Column(
                   children: [
@@ -540,7 +540,7 @@ class _ImmersivePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.1)),
                 ),
                 child: Row(
                   children: [
@@ -556,8 +556,8 @@ class _ImmersivePage extends StatelessWidget {
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("INTÉGRITÉ VÉRIFIÉE", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.indigoAccent, letterSpacing: 1.2)),
-                        Text("SHA-256: 4e9...f21", style: TextStyle(fontSize: 12, color: Colors.white70)),
+                        Text("INTÉGRITÉ VÉRIFIÉE", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: theme.colorScheme.primary, letterSpacing: 1.2)),
+                        Text("SHA-256: 4e9...f21", style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withOpacity(0.7))),
                       ],
                     ),
                   ],
@@ -585,7 +585,7 @@ class _ImmersivePage extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.05)),
+            border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.05)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -617,8 +617,8 @@ class _ImmersivePage extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+                  gradient: LinearGradient(
+                    colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer.withOpacity(1.0)],
                   ),
                 ),
                 child: ElevatedButton.icon(
@@ -627,7 +627,7 @@ class _ImmersivePage extends StatelessWidget {
                   label: const Text("ENREGISTRER", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
-                    foregroundColor: Colors.black87,
+                    foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
@@ -655,8 +655,8 @@ class _MetadataRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.white38, fontSize: 13)),
-          Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+          Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), fontSize: 13)),
+          Text(value, style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 13)),
         ],
       ),
     );
@@ -695,13 +695,13 @@ class _NoteEditorState extends State<_NoteEditor> {
       decoration: InputDecoration(
         hintText: widget.hint,
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       ),
       maxLines: null,
       controller: _controller,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14),
       onChanged: widget.onSave,
     );
   }

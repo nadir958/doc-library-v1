@@ -58,7 +58,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white.withOpacity(0.1)),
+                      border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.1)),
                     ),
                     child: Stack(
                       children: [
@@ -99,7 +99,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
               decoration: BoxDecoration(
                 color: theme.colorScheme.surface,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
+                border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.05)),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -152,12 +152,12 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+                      gradient: LinearGradient(
+                        colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer.withOpacity(1.0)],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFC0C1FF).withOpacity(0.3),
+                          color: theme.colorScheme.primary.withOpacity(0.3),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
@@ -180,7 +180,7 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
                             },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
-                        foregroundColor: Colors.black87,
+                        foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -201,19 +201,11 @@ class _CapturePreviewScreenState extends ConsumerState<CapturePreviewScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircularProgressIndicator(color: Colors.indigoAccent),
+              CircularProgressIndicator(color: theme.colorScheme.primary),
               const SizedBox(height: 32),
-              Text(
-                l10n.ocrInProgress.toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.indigoAccent,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                  fontSize: 12,
-                ),
-              ),
+              Text(l10n.ocrInProgress.toUpperCase(), style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 12)),
               const SizedBox(height: 8),
-              const Text("Sécurisation de vos données...", style: TextStyle(color: Colors.white24, fontSize: 12)),
+              Text("Sécurisation de vos données...", style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.24), fontSize: 12)),
             ],
           ),
         ),

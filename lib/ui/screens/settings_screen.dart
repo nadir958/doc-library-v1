@@ -32,7 +32,7 @@ class SettingsScreen extends ConsumerWidget {
                           settings.locale?.languageCode == 'ar' ? 'العربية' : l10n.system,
                 onTap: () => _showLanguageDialog(context, settingsNotifier),
               ),
-              const Divider(height: 1, indent: 56, color: Colors.white10),
+              const Divider(height: 1, indent: 56, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.dark_mode_outlined,
                 title: l10n.theme,
@@ -74,7 +74,7 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle: "Non configurée (Phase 2)",
                 color: Colors.orangeAccent,
               ),
-              const Divider(height: 1, indent: 56, color: Colors.white10),
+              const Divider(height: 1, indent: 56, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.delete_forever_outlined,
                 title: l10n.deleteAllData,
@@ -94,7 +94,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: l10n.version,
                 subtitle: "1.0.0 (Stable)",
               ),
-              const Divider(height: 1, indent: 56, color: Colors.white10),
+              const Divider(height: 1, indent: 56, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.verified_outlined,
                 title: l10n.developedBy,
@@ -109,7 +109,7 @@ class SettingsScreen extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Colors.white10,
+                color: theme.colorScheme.onSurface.withOpacity(0.05),
                 letterSpacing: 2,
               ),
             ),
@@ -208,7 +208,7 @@ class _SectionHeader extends StatelessWidget {
         style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.bold,
-          color: Colors.white24,
+          color: theme.colorScheme.onSurface.withOpacity(0.3),
           letterSpacing: 1.5,
         ),
       ),
@@ -226,7 +226,7 @@ class _SettingsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.05)),
       ),
       child: Column(children: children),
     );
@@ -253,9 +253,9 @@ class _SettingsTile extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: color ?? Colors.indigoAccent),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.white38)),
+      subtitle: Text(subtitle, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant)),
       onTap: onTap,
-      trailing: onTap != null ? const Icon(Icons.chevron_right, size: 18, color: Colors.white10) : null,
+      trailing: onTap != null ? Icon(Icons.chevron_right, size: 18, color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.3)) : null,
     );
   }
 }
