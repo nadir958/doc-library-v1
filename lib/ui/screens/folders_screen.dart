@@ -38,12 +38,13 @@ class FoldersScreen extends ConsumerWidget {
                         l10n.folders,
                         style: theme.textTheme.headlineLarge,
                       ),
-                      IconButton.filled(
+                      IconButton(
                         onPressed: () => _showAddFolderDialog(context, ref),
                         icon: const Icon(Icons.create_new_folder_outlined),
                         style: IconButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primaryContainer,
-                          foregroundColor: theme.colorScheme.onPrimaryContainer,
+                          backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                          foregroundColor: theme.colorScheme.primary,
+                          padding: const EdgeInsets.all(12),
                         ),
                       ),
                     ],
@@ -88,15 +89,31 @@ class FoldersScreen extends ConsumerWidget {
                         style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.4)),
                       ),
                       const SizedBox(height: 32),
-                      ElevatedButton.icon(
-                        onPressed: () => _showAddFolderDialog(context, ref),
-                        icon: const Icon(Icons.add),
-                        label: Text(l10n.newFolder),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.primary.withOpacity(0.2),
+                              blurRadius: 15,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          gradient: LinearGradient(
+                            colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
+                          ),
+                        ),
+                        child: ElevatedButton.icon(
+                          onPressed: () => _showAddFolderDialog(context, ref),
+                          icon: const Icon(Icons.add),
+                          label: Text(l10n.newFolder),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            elevation: 0,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 120), // Push content up above bottom nav
@@ -238,7 +255,7 @@ class FoldersScreen extends ConsumerWidget {
       builder: (ctx) => AlertDialog(
         backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text(l10n.newFolder, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(l10n.newFolder, style: theme.textTheme.titleLarge),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(
@@ -265,8 +282,8 @@ class FoldersScreen extends ConsumerWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.primaryContainer,
-              foregroundColor: theme.colorScheme.onPrimaryContainer,
+              backgroundColor: theme.colorScheme.primary,
+              foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             child: Text(l10n.create),
