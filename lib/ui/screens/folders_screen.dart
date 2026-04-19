@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/folder_provider.dart';
 import 'dashboard_screen.dart';
+import '../theme/app_theme.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class FoldersScreen extends ConsumerWidget {

@@ -9,6 +9,7 @@ import 'document_detail_screen.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
 import 'settings_screen.dart';
+import '../theme/app_theme.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {

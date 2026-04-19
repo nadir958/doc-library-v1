@@ -12,6 +12,7 @@ import '../providers/capture_provider.dart';
 import '../providers/scan_provider.dart';
 import 'manual_capture_screen.dart';
 import 'capture_preview_screen.dart';
+import '../theme/app_theme.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 final documentPagesProvider = FutureProvider.family<List<PageModel>, int>((ref, docId) async {
@@ -515,7 +516,7 @@ class _ImmersivePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.1)),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(12.0),
@@ -553,7 +554,7 @@ class _ImmersivePage extends StatelessWidget {
                       child: const Icon(Icons.verified_user, color: Colors.indigoAccent, size: 20),
                     ),
                     const SizedBox(width: 12),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("INTÉGRITÉ VÉRIFIÉE", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: theme.colorScheme.primary, letterSpacing: 1.2)),
