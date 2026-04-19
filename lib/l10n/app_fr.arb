@@ -49,5 +49,6 @@
   "smartScanDesc": "Détection automatique et correction",
   "system": "Système",
   "light": "Clair",
-  "dark": "Sombre"
+  "dark": "Sombre",
+  "loading": "Chargement..."
 }

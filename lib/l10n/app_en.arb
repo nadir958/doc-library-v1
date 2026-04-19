@@ -49,5 +49,6 @@
   "smartScanDesc": "Automatic detection and correction",
   "system": "System",
   "light": "Light",
-  "dark": "Dark"
+  "dark": "Dark",
+  "loading": "Loading..."
 }
