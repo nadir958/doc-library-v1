@@ -47,13 +47,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           widget.folder != null ? '${l10n.folders}: ${widget.folder!.name}' : l10n.appTitle,
           style: theme.textTheme.titleLarge,
         ),
-        actions: [
-          if (widget.folder == null)
-            IconButton(
-              icon: const Icon(Icons.settings_outlined),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen())),
-            ),
-        ],
+        actions: const [],
       ),
       body: CustomScrollView(
         slivers: [
@@ -69,9 +63,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       text: TextSpan(
                         style: theme.textTheme.headlineLarge?.copyWith(height: 1.1),
                         children: [
-                          const TextSpan(text: "Gérez votre "),
+                          const TextSpan(text: "Gérez vos "),
                           TextSpan(
-                            text: "empreinte digitale",
+                            text: "documents",
                             style: TextStyle(
                               foreground: Paint()
                                 ..shader = LinearGradient(
@@ -187,9 +181,28 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.folder_off_outlined, size: 64, color: theme.colorScheme.onSurface.withOpacity(0.05)),
-                        const SizedBox(height: 16),
-                        Text(l10n.noDocuments, style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.2))),
+                        Container(
+                          padding: const EdgeInsets.all(32),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withOpacity(0.05),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.auto_awesome_motion_outlined, size: 80, color: theme.colorScheme.primary.withOpacity(0.2)),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          l10n.noDocuments.toUpperCase(),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            letterSpacing: 2,
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.onSurface.withOpacity(0.3),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Commencez à sécuriser vos documents dès maintenant.",
+                          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.4)),
+                        ),
                       ],
                     ),
                   ),

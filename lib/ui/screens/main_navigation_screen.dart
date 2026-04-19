@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'folders_screen.dart';
+import 'settings_screen.dart';
 import 'package:doc_library/generated/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const DashboardScreen(),
     const FoldersScreen(),
+    const SettingsScreen(),
   ];
 
   @override
@@ -34,12 +36,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         margin: const EdgeInsets.fromLTRB(24, 0, 24, 32),
         height: 80,
         decoration: BoxDecoration(
-          color: const Color(0xCC141B2B),
+          color: theme.colorScheme.surface.withOpacity(0.8),
           borderRadius: BorderRadius.circular(40),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.05)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: theme.brightness == Brightness.dark ? Colors.black.withOpacity(0.3) : theme.colorScheme.primary.withOpacity(0.1),
               blurRadius: 30,
               offset: const Offset(0, 10),
             ),
@@ -65,6 +67,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   label: l10n.folders,
                   isActive: _currentIndex == 1,
                   onTap: () => setState(() => _currentIndex = 1),
+                ),
+                _NavItem(
+                  icon: Icons.settings_outlined,
+                  activeIcon: Icons.settings,
+                  label: l10n.settings,
+                  isActive: _currentIndex == 2,
+                  onTap: () => setState(() => _currentIndex = 2),
                 ),
               ],
             ),
@@ -92,6 +101,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -104,14 +114,14 @@ class _NavItem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               gradient: isActive
-                  ? const LinearGradient(
-                      colors: [Color(0xFFC0C1FF), Color(0xFF8083FF)],
+                  ? LinearGradient(
+                      colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
                     )
                   : null,
             ),
             child: Icon(
               isActive ? activeIcon : icon,
-              color: isActive ? const Color(0xFF0C1322) : Colors.white54,
+              color: isActive ? (theme.brightness == Brightness.dark ? const Color(0xFF0C1322) : Colors.white) : theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
               size: 24,
             ),
           ),
@@ -121,7 +131,7 @@ class _NavItem extends StatelessWidget {
             style: TextStyle(
               fontSize: 10,
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? const Color(0xFFC0C1FF) : Colors.white38,
+              color: isActive ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant.withOpacity(0.4),
             ),
           ),
         ],

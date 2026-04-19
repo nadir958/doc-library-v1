@@ -142,7 +142,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                     children: [
                       Icon(Icons.arrow_back, size: 14, color: Colors.indigoAccent),
                       SizedBox(width: 4),
-                      Text("Retour au Vault", style: TextStyle(fontSize: 12, color: Colors.white54)),
+                      Text("Retour au Vault", style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurfaceVariant)),
                     ],
                   ),
                 ),
@@ -178,6 +178,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
               )
             else
               ...pages.map((page) => _ImmersivePage(
+                    key: ValueKey(page.id),
                     page: page,
                     isEditing: _isEditing,
                     onDelete: () => _deletePage(page.id!),
@@ -202,7 +203,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
-                      color: Colors.white38,
+                      color: theme.colorScheme.onSurface.withOpacity(0.3),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -218,7 +219,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.5,
-                          color: Colors.white38,
+                          color: theme.colorScheme.onSurface.withOpacity(0.3),
                         ),
                       ),
                       const Spacer(),
@@ -465,13 +466,14 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
   }
 }
 
-class _ImmersivePage extends StatelessWidget {
+class _ImmersivePage extends StatefulWidget {
   final PageModel page;
   final bool isEditing;
   final VoidCallback onDelete;
   final Function(String) onUpdateNotes;
 
   const _ImmersivePage({
+    super.key,
     required this.page,
     required this.isEditing,
     required this.onDelete,
@@ -479,8 +481,32 @@ class _ImmersivePage extends StatelessWidget {
   });
 
   @override
+  State<_ImmersivePage> createState() => _ImmersivePageState();
+}
+
+class _ImmersivePageState extends State<_ImmersivePage> {
+  final TransformationController _transformationController = TransformationController();
+  String _currentNotes = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _currentNotes = widget.page.notes ?? '';
+  }
+
+  void _zoom(double scale) {
+    final double currentScale = _transformationController.value.getMaxScaleOnAxis();
+    final double newScale = (currentScale * scale).clamp(0.5, 4.0);
+    setState(() {
+      _transformationController.value = Matrix4.identity()..scale(newScale);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -497,10 +523,11 @@ class _ImmersivePage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
                 child: InteractiveViewer(
+                  transformationController: _transformationController,
                   minScale: 0.5,
                   maxScale: 4.0,
                   child: Image.file(
-                    File(page.imagePath),
+                    File(widget.page.imagePath),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -512,20 +539,20 @@ class _ImmersivePage extends StatelessWidget {
               right: 16,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(color: theme.colorScheme.onSurface.withOpacity(0.1)),
                 ),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Icon(Icons.add, color: Colors.indigoAccent),
+                    IconButton(
+                      icon: const Icon(Icons.add, color: Colors.white),
+                      onPressed: () => _zoom(1.2),
                     ),
-                    Divider(height: 1, color: Colors.white10),
-                    Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Icon(Icons.remove, color: Colors.indigoAccent),
+                    Container(height: 1, width: 24, color: Colors.white10),
+                    IconButton(
+                      icon: const Icon(Icons.remove, color: Colors.white),
+                      onPressed: () => _zoom(0.8),
                     ),
                   ],
                 ),
@@ -557,15 +584,15 @@ class _ImmersivePage extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("INTÉGRITÉ VÉRIFIÉE", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: theme.colorScheme.primary, letterSpacing: 1.2)),
-                        Text("SHA-256: 4e9...f21", style: TextStyle(fontSize: 12, color: theme.colorScheme.onSurface.withOpacity(0.7))),
+                        Text("INTÉGRITÉ VÉRIFIÉE", style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.indigoAccent, letterSpacing: 1.2)),
+                        Text("SHA-256: 4e9...f21", style: TextStyle(fontSize: 12, color: Colors.white70)),
                       ],
                     ),
                   ],
                 ),
               ),
             ),
-            if (isEditing)
+            if (widget.isEditing)
               Positioned(
                 top: 16,
                 left: 16,
@@ -573,7 +600,7 @@ class _ImmersivePage extends StatelessWidget {
                   backgroundColor: Colors.redAccent,
                   child: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.white),
-                    onPressed: onDelete,
+                    onPressed: widget.onDelete,
                   ),
                 ),
               ),
@@ -609,8 +636,11 @@ class _ImmersivePage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _NoteEditor(
-                initialNote: page.notes ?? '',
-                onSave: onUpdateNotes,
+                initialNote: _currentNotes,
+                onSave: (val) {
+                  _currentNotes = val;
+                  widget.onUpdateNotes(val);
+                },
                 hint: "Ajoutez vos observations...",
               ),
               const SizedBox(height: 16),
@@ -619,11 +649,20 @@ class _ImmersivePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
                   gradient: LinearGradient(
-                    colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer.withOpacity(1.0)],
+                    colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
                   ),
                 ),
                 child: ElevatedButton.icon(
-                  onPressed: () {}, // Handled by auto-save but UI shows save
+                  onPressed: () {
+                    widget.onUpdateNotes(_currentNotes);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.save),
+                        backgroundColor: Colors.green,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                   icon: const Icon(Icons.save_outlined, size: 18),
                   label: const Text("ENREGISTRER", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                   style: ElevatedButton.styleFrom(
