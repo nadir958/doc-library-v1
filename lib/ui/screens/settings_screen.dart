@@ -115,8 +115,9 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 100),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _showLanguageDialog(BuildContext context, SettingsNotifier notifier) {
     final l10n = AppLocalizations.of(context)!;

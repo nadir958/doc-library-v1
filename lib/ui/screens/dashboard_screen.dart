@@ -309,8 +309,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Container(
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 110, right: 16),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
