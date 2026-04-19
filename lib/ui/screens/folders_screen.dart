@@ -160,6 +160,11 @@ class FoldersScreen extends ConsumerWidget {
       floatingActionButton: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
+          gradient: LinearGradient(
+            colors: [theme.colorScheme.primary, theme.colorScheme.primaryContainer],
+          ),
+          boxShadow: [
+            BoxShadow(
               color: theme.colorScheme.primary.withOpacity(0.3),
               blurRadius: 20,
               offset: const Offset(0, 8),
@@ -170,7 +175,7 @@ class FoldersScreen extends ConsumerWidget {
           onPressed: () => _showAddFolderDialog(context, ref),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          foregroundColor: theme.brightness == Brightness.dark ? backgroundColor : Colors.white,
+          foregroundColor: theme.brightness == Brightness.dark ? AppTheme.backgroundColor : Colors.white,
           child: const Icon(Icons.create_new_folder_outlined),
         ),
       ),
