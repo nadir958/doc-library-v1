@@ -50,5 +50,10 @@
   "system": "Système",
   "light": "Clair",
   "dark": "Sombre",
-  "loading": "Chargement..."
+  "loading": "Chargement...",
+  "appLocked": "Application Verrouillée",
+  "unlockApp": "Déverrouiller",
+  "authRequiredDescription": "Veuillez vous authentifier pour accéder à vos documents",
+  "biometricEnabled": "Activé (Protection biométrique)",
+  "biometricDisabled": "Désactivé (Accès libre)"
 }
