@@ -12,6 +12,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   SettingsNotifier(this._prefs) : super(SettingsState(
     themeMode: ThemeMode.values[_prefs.getInt('themeMode') ?? 0],
     locale: _prefs.getString('locale') != null ? Locale(_prefs.getString('locale')!) : null,
+    isBiometricEnabled: _prefs.getBool('isBiometricEnabled') ?? false,
   ));
 
   void setThemeMode(ThemeMode mode) {
@@ -27,18 +28,33 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
       _prefs.setString('locale', locale.languageCode);
     }
   }
+
+  void setBiometricEnabled(bool enabled) {
+    state = state.copyWith(isBiometricEnabled: enabled);
+    _prefs.setBool('isBiometricEnabled', enabled);
+  }
 }
 
 class SettingsState {
   final ThemeMode themeMode;
   final Locale? locale;
+  final bool isBiometricEnabled;
 
-  SettingsState({required this.themeMode, this.locale});
+  SettingsState({
+    required this.themeMode, 
+    this.locale,
+    this.isBiometricEnabled = false,
+  });
 
-  SettingsState copyWith({ThemeMode? themeMode, Locale? locale}) {
+  SettingsState copyWith({
+    ThemeMode? themeMode, 
+    Locale? locale,
+    bool? isBiometricEnabled,
+  }) {
     return SettingsState(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
+      isBiometricEnabled: isBiometricEnabled ?? this.isBiometricEnabled,
     );
   }
 }
