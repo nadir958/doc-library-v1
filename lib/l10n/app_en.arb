@@ -65,5 +65,8 @@
   "deleteAllDataConfirm": "All your local data will be permanently deleted.",
   "editorialHeaderPart1": "Manage your ",
   "editorialHeaderPart2": "documents",
-  "editorialHeaderPart3": " securely."
+  "editorialHeaderPart3": " securely.",
+  "startSecuringDocs": "Start securing your documents now.",
+  "createFirstFolder": "Create your first folder to organize your scans.",
+  "organizeSensibleDocs": "Organize your sensitive documents in encrypted vaults. Each folder is protected."
 }
