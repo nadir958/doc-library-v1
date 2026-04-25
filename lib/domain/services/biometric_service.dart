@@ -13,10 +13,6 @@ class BiometricService {
       
       return await _auth.authenticate(
         localizedReason: 'Veuillez vous authentifier pour accéder à vos documents',
-        options: const AuthenticationOptions(
-          stickyAuth: true,
-          biometricOnly: false,
-        ),
       );
     } catch (e) {
       print("Erreur d'authentification: $e");
