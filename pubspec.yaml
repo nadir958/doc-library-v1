@@ -1,7 +1,7 @@
 name: doc_library
 description: A privacy-first personal document library built with Flutter.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
