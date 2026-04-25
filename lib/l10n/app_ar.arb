@@ -50,5 +50,10 @@
   "system": "النظام",
   "light": "فاتح",
   "dark": "داكن",
-  "loading": "جاري التحميل..."
+  "loading": "جاري التحميل...",
+  "appLocked": "التطبيق مقفل",
+  "unlockApp": "إلغاء القفل",
+  "authRequiredDescription": "يرجى المصادقة للوصول إلى مستنداتك",
+  "biometricEnabled": "مفعل (حماية بيومترية)",
+  "biometricDisabled": "معطل (دخول حر)"
 }
