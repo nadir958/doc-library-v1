@@ -294,6 +294,7 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
   }
 
   void _showMoreActions(BuildContext context, AppLocalizations l10n) {
+    final theme = Theme.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF191F2F),
