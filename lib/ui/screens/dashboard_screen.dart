@@ -339,6 +339,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   void _showDeleteDialog(BuildContext context, DocumentModel doc, AppLocalizations l10n) async {
+    final theme = Theme.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
