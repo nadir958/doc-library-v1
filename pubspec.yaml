@@ -38,6 +38,9 @@ dependencies:
   opencv_dart: ^2.2.1+4
   google_fonts: ^8.0.2
 
+dependency_overrides:
+  flutter_plugin_android_lifecycle: ^2.0.34
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
