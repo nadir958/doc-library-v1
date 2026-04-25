@@ -55,6 +55,23 @@ class AppTheme {
         side: BorderSide(color: const Color(0xFF0F172A).withOpacity(0.05)),
       ),
     ),
+    
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      titleTextStyle: GoogleFonts.manrope(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: const Color(0xFF0F172A),
+      ),
+      contentTextStyle: const TextStyle(
+        fontSize: 15,
+        color: Color(0xFF64748B),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      elevation: 0,
+    ),
 
     textTheme: GoogleFonts.interTextTheme().copyWith(
       headlineLarge: GoogleFonts.manrope(
@@ -109,6 +126,24 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
+    ),
+    
+    dialogTheme: DialogTheme(
+      backgroundColor: surfaceColor,
+      titleTextStyle: GoogleFonts.manrope(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: onSurfaceColor,
+      ),
+      contentTextStyle: const TextStyle(
+        fontSize: 15,
+        color: onSurfaceVariantColor,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: onSurfaceColor.withOpacity(0.05)),
+      ),
+      elevation: 0,
     ),
     
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
