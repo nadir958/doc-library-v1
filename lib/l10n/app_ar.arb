@@ -65,5 +65,8 @@
   "deleteAllDataConfirm": "سيتم حذف جميع بياناتك المحلية بشكل نهائي.",
   "editorialHeaderPart1": "أدر ",
   "editorialHeaderPart2": "مستنداتك",
-  "editorialHeaderPart3": " بأمان تام."
+  "editorialHeaderPart3": " بأمان تام.",
+  "startSecuringDocs": "ابدأ في تأمين مستنداتك الآن.",
+  "createFirstFolder": "أنشئ مجلدك الأول لتنظيم مسوحاتك الضوئية.",
+  "organizeSensibleDocs": "نظم مستنداتك الحساسة في خزائن مشفرة. كل مجلد محمي."
 }
