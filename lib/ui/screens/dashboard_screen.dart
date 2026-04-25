@@ -194,7 +194,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Commencez à sécuriser vos documents dès maintenant.",
+                          l10n.startSecuringDocs,
                           style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.4)),
                         ),
                         const SizedBox(height: 120), // Push content up above bottom nav
