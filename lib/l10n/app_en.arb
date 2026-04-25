@@ -55,5 +55,15 @@
   "unlockApp": "Unlock",
   "authRequiredDescription": "Please authenticate to access your documents",
   "biometricEnabled": "Enabled (Biometric protection)",
-  "biometricDisabled": "Disabled (Free access)"
+  "biometricDisabled": "Disabled (Free access)",
+  "cloudSync": "Cloud Synchronization",
+  "notConfigured": "Not configured (Phase 2)",
+  "irreversibleAction": "Irreversible action",
+  "stableVersion": "1.0.0 (Stable)",
+  "appDescription": "Privacy-First Document Library",
+  "protectedByEncryption": "PROTECTED BY AES-256 ENCRYPTION",
+  "deleteAllDataConfirm": "All your local data will be permanently deleted.",
+  "editorialHeaderPart1": "Manage your ",
+  "editorialHeaderPart2": "documents",
+  "editorialHeaderPart3": " securely."
 }
