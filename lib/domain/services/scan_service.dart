@@ -7,10 +7,7 @@ class ScanService {
   Future<List<String>?> startSmartScan() async {
     try {
       final options = DocumentScannerOptions(
-        documentFormat: DocumentFormat.jpeg,
         mode: ScannerMode.full,
-        isGalleryImport: true,
-        pageLimit: 20,
       );
       final scanner = DocumentScanner(options: options);
       final result = await scanner.scanDocument();
