@@ -55,5 +55,15 @@
   "unlockApp": "إلغاء القفل",
   "authRequiredDescription": "يرجى المصادقة للوصول إلى مستنداتك",
   "biometricEnabled": "مفعل (حماية بيومترية)",
-  "biometricDisabled": "معطل (دخول حر)"
+  "biometricDisabled": "معطل (دخول حر)",
+  "cloudSync": "مزامنة سحابية",
+  "notConfigured": "غير مهيأ (المرحلة 2)",
+  "irreversibleAction": "عملية غير قابلة للإلغاء",
+  "stableVersion": "1.0.0 (Stable)",
+  "appDescription": "مكتبة مستندات تراعي الخصوصية",
+  "protectedByEncryption": "محمي بتشفير AES-256",
+  "deleteAllDataConfirm": "سيتم حذف جميع بياناتك المحلية بشكل نهائي.",
+  "editorialHeaderPart1": "أدر ",
+  "editorialHeaderPart2": "مستنداتك",
+  "editorialHeaderPart3": " بأمان تام."
 }
