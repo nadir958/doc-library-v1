@@ -69,15 +69,15 @@ class SettingsScreen extends ConsumerWidget {
             children: [
               _SettingsTile(
                 icon: Icons.cloud_off_outlined,
-                title: "Synchronisation Cloud",
-                subtitle: "Non configurée (Phase 2)",
+                title: l10n.cloudSync,
+                subtitle: l10n.notConfigured,
                 color: Colors.orangeAccent,
               ),
               const Divider(height: 1, indent: 56, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.delete_forever_outlined,
                 title: l10n.deleteAllData,
-                subtitle: "Action irréversible",
+                subtitle: l10n.irreversibleAction,
                 color: Colors.redAccent,
                 onTap: () => _showDeleteAllDialog(context, ref),
               ),
@@ -105,20 +105,20 @@ class SettingsScreen extends ConsumerWidget {
               _SettingsTile(
                 icon: Icons.info_outline,
                 title: l10n.version,
-                subtitle: "1.0.0 (Stable)",
+                subtitle: l10n.stableVersion,
               ),
               const Divider(height: 1, indent: 56, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.verified_outlined,
                 title: l10n.developedBy,
-                subtitle: "Privacy-First Document Library",
+                subtitle: l10n.appDescription,
               ),
             ],
           ),
           const SizedBox(height: 40),
           Center(
             child: Text(
-              "PROTÉGÉ PAR CHIFFREMENT AES-256",
+              l10n.protectedByEncryption,
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
@@ -186,7 +186,7 @@ class SettingsScreen extends ConsumerWidget {
         backgroundColor: theme.colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: Text(l10n.deleteAllData, style: theme.textTheme.titleLarge),
-        content: const Text("Toutes vos données locales seront supprimées définitivement."),
+        content: Text(l10n.deleteAllDataConfirm),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel, style: TextStyle(color: theme.colorScheme.onSurfaceVariant))),
           ElevatedButton(
