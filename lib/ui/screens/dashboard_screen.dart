@@ -345,10 +345,27 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         title: Text(l10n.deleteDocument),
         content: Text(l10n.deleteDocumentConfirm),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              l10n.cancel,
+              style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: TextButton.styleFrom(
+                backgroundColor: theme.colorScheme.error.withOpacity(0.1),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: Text(
+                l10n.delete,
+                style: TextStyle(color: theme.colorScheme.error, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         ],
       ),
