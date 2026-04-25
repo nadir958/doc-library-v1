@@ -90,15 +90,10 @@ class SettingsScreen extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      width: 80,
-                      height: 80,
-                    ),
-                  ),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 100,
+                  height: 100,
                 ),
               ),
               const Divider(height: 1, indent: 24, endIndent: 24, color: Colors.transparent),
