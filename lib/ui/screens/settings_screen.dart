@@ -48,12 +48,9 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.fingerprint_outlined, color: Colors.indigoAccent),
                 title: Text(l10n.biometricLock, style: const TextStyle(fontWeight: FontWeight.w600)),
-                subtitle: Text(
-                  settings.isBiometricEnabled 
-                    ? l10n.biometricEnabled 
-                    : l10n.biometricDisabled, 
-                  style: const TextStyle(fontSize: 12)
-                ),
+                subtitle: settings.isBiometricEnabled 
+                    ? Text(l10n.biometricEnabled, style: const TextStyle(fontSize: 12))
+                    : null,
                 trailing: Switch.adaptive(
                   value: settings.isBiometricEnabled, 
                   onChanged: (val) => settingsNotifier.setBiometricEnabled(val),
