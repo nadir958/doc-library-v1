@@ -13,6 +13,8 @@ subprojects {
             if (project.android.hasProperty('namespace') && project.android.namespace == null) {
                 project.android.namespace = project.group ?: "com.example.${project.name.replace('-', '_')}"
             }
+            // Force compileSdkVersion 36 for all plugins
+            project.android.compileSdkVersion 36
         }
     }
 }
