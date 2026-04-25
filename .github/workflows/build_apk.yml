@@ -28,6 +28,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Generate Localizations
+        run: flutter gen-l10n
+
       - name: Generate Launcher Icons
         run: flutter pub run flutter_launcher_icons
 
