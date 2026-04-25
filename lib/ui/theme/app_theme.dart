@@ -128,7 +128,7 @@ class AppTheme {
       ),
     ),
     
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: surfaceColor,
       titleTextStyle: GoogleFonts.manrope(
         fontSize: 20,
