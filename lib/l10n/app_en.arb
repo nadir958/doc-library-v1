@@ -50,5 +50,10 @@
   "system": "System",
   "light": "Light",
   "dark": "Dark",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "appLocked": "Application Locked",
+  "unlockApp": "Unlock",
+  "authRequiredDescription": "Please authenticate to access your documents",
+  "biometricEnabled": "Enabled (Biometric protection)",
+  "biometricDisabled": "Disabled (Free access)"
 }
