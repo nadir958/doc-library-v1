@@ -57,9 +57,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       text: TextSpan(
                         style: theme.textTheme.headlineLarge?.copyWith(height: 1.1),
                         children: [
-                          const TextSpan(text: "Gérez vos "),
+                          TextSpan(text: l10n.editorialHeaderPart1),
                           TextSpan(
-                            text: "documents",
+                            text: l10n.editorialHeaderPart2,
                             style: TextStyle(
                               foreground: Paint()
                                 ..shader = LinearGradient(
@@ -67,7 +67,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
                             ),
                           ),
-                          const TextSpan(text: " en toute sécurité."),
+                          TextSpan(text: l10n.editorialHeaderPart3),
                         ],
                       ),
                     ),
