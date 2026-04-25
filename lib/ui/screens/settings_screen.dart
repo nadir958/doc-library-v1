@@ -48,14 +48,15 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.fingerprint_outlined, color: Colors.indigoAccent),
                 title: Text(l10n.biometricLock, style: const TextStyle(fontWeight: FontWeight.w600)),
-                subtitle: Text(l10n.disabledForNow, style: const TextStyle(fontSize: 12)),
+                subtitle: Text(
+                  settings.isBiometricEnabled 
+                    ? l10n.biometricEnabled 
+                    : l10n.biometricDisabled, 
+                  style: const TextStyle(fontSize: 12)
+                ),
                 trailing: Switch.adaptive(
-                  value: false, 
-                  onChanged: (val) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.comingSoon)),
-                    );
-                  },
+                  value: settings.isBiometricEnabled, 
+                  onChanged: (val) => settingsNotifier.setBiometricEnabled(val),
                   activeColor: theme.colorScheme.secondary,
                 ),
               ),
@@ -87,6 +88,20 @@ class SettingsScreen extends ConsumerWidget {
           _SectionHeader(title: l10n.about),
           _SettingsCard(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: 80,
+                      height: 80,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(height: 1, indent: 24, endIndent: 24, color: Colors.transparent),
               _SettingsTile(
                 icon: Icons.info_outline,
                 title: l10n.version,
