@@ -9,6 +9,8 @@ import 'data/models/models.dart';
 import 'ui/theme/app_theme.dart';
 import 'ui/screens/main_navigation_screen.dart';
 import 'ui/providers/settings_provider.dart';
+import 'ui/providers/auth_provider.dart';
+import 'ui/screens/lock_screen.dart';
 
 // Provider pour l'instance Isar
 final isarProvider = Provider<Isar>((ref) {
@@ -44,6 +46,7 @@ class DocLibraryApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    final isAuthenticated = ref.watch(authProvider);
 
     return MaterialApp(
       title: 'Doc Library',
@@ -63,7 +66,9 @@ class DocLibraryApp extends ConsumerWidget {
         Locale('en'),
         Locale('ar'),
       ],
-      home: const MainNavigationScreen(),
+      home: (settings.isBiometricEnabled && !isAuthenticated)
+          ? const LockScreen()
+          : const MainNavigationScreen(),
     );
   }
 }
